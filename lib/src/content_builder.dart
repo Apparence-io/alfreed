@@ -75,7 +75,7 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent> imple
   }
 
   @override
-  Widget build(BuildContext context) => builder(mvvmContext, presenter, presenter.state);
+  Widget build(BuildContext context) => SizeChangedLayoutNotifier(child: builder(mvvmContext, presenter, presenter.state));
 
   @override
   void forceRefreshView() {

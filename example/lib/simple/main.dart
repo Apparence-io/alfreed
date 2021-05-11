@@ -21,7 +21,6 @@ var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
   key: ValueKey("presenter"),
   builder: (ctx, presenter, model) {
     return Scaffold(
-      // key: _scaffoldKey,
       appBar: AppBar(title: Text(model.title ?? "")),
       body: ListView.separated(
           itemBuilder: (context, index) => InkWell(
@@ -33,11 +32,13 @@ var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
               ),
           separatorBuilder: (context, index) => Divider(height: 1),
           itemCount: model.todoList?.length ?? 0),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.redAccent,
-        onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
-        child: Icon(Icons.plus_one),
-      ),
+      floatingActionButton: ctx.device < Device.large()
+          ? FloatingActionButton(
+              backgroundColor: Colors.redAccent,
+              onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
+              child: Icon(Icons.plus_one),
+            )
+          : null,
     );
   },
   presenterBuilder: (context) => MyPresenter(),
