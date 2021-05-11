@@ -35,7 +35,8 @@ var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
       floatingActionButton: ctx.device < Device.large()
           ? FloatingActionButton(
               backgroundColor: Colors.redAccent,
-              onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
+              onPressed: () =>
+                  presenter.addTodoWithRefresh("Button Todo created"),
               child: Icon(Icons.plus_one),
             )
           : null,

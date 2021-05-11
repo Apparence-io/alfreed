@@ -7,16 +7,19 @@ import 'component.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Builds page correctly using alfreed', (WidgetTester tester) async {
+  testWidgets('Builds page correctly using alfreed',
+      (WidgetTester tester) async {
     await tester.pumpWidget(SimpleBuilderApp());
     expect(find.text('my todo task 1'), findsOneWidget);
     expect(find.text('my todo task 2'), findsOneWidget);
     expect(find.text('my todo task 3'), findsOneWidget);
   });
 
-  testWidgets('Using presenter directly -> add a todo and refresh view', (WidgetTester tester) async {
+  testWidgets('Using presenter directly -> add a todo and refresh view',
+      (WidgetTester tester) async {
     await tester.pumpWidget(SimpleBuilderApp());
-    var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(tester, ValueKey("presenter"));
+    var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
+        tester, ValueKey("presenter"));
     presenter.addTodo('my todo task NEW');
     expect(find.text('my todo task NEW'), findsNothing);
     presenter.refreshView();
@@ -24,7 +27,8 @@ void main() {
     expect(find.text('my todo task NEW'), findsOneWidget);
   });
 
-  testWidgets('Press add todo from floating button -> a new Todo is available', (WidgetTester tester) async {
+  testWidgets('Press add todo from floating button -> a new Todo is available',
+      (WidgetTester tester) async {
     await tester.pumpWidget(SimpleBuilderApp());
     var floatingFinder = find.byType(FloatingActionButton);
     expect(find.text('Button Todo created'), findsNothing);

@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import '../alfreed.dart';
 import 'content_builder.dart';
 
-class MVVMMultipleTickerProviderContentState<P extends Presenter, M> extends State<MVVMContent> with TickerProviderStateMixin implements ContentView {
+class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
+    extends State<MVVMContent>
+    with TickerProviderStateMixin
+    implements ContentView {
   List<AnimationController>? _controller;
   final MvvmAnimationListener<P, M> animListener;
   bool hasInit = false;
@@ -52,13 +55,16 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M> extends Sta
 
   P get presenter => PresenterInherited.of<P, M>(context).presenter;
 
-  ContentBuilder<P, M> get builder => PresenterInherited.of<P, M>(context).builder;
+  ContentBuilder<P, M> get builder =>
+      PresenterInherited.of<P, M>(context).builder;
 
   @override
-  Widget build(BuildContext context) => builder(mvvmContext, presenter, presenter.state);
+  Widget build(BuildContext context) =>
+      builder(mvvmContext, presenter, presenter.state);
 
   @override
-  Future<void> refreshAnimation() async => animListener(mvvmContext, presenter, presenter.state);
+  Future<void> refreshAnimation() async =>
+      animListener(mvvmContext, presenter, presenter.state);
 
   @override
   Future<void> disposeAnimation() async {

@@ -37,11 +37,17 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
   }
 
   void addTodo(String s) {
-    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this
+        .state!
+        .todoList!
+        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this
+        .state!
+        .todoList!
+        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
     refreshView();
   }
 
