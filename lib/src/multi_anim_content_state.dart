@@ -18,6 +18,7 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
   void didChangeDependencies() {
     super.didChangeDependencies();
     presenter.viewRef = this;
+    _controller = widget.multipleAnimController!(this);
     if (!hasInit) {
       hasInit = true;
       presenter.onInit();
@@ -25,7 +26,6 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
         presenter.afterViewInit();
       });
     }
-    _controller = widget.multipleAnimController!(this);
   }
 
   @override
@@ -51,7 +51,8 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
     }
   }
 
-  AlfreedContext get mvvmContext => AlfreedContext(context);
+  AlfreedContext get mvvmContext =>
+      AlfreedContext(context, animationsControllers: _controller);
 
   P get presenter => PresenterInherited.of<P, M>(context).presenter;
 
@@ -75,4 +76,7 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
       }
     }
   }
+
+  @override
+  List<AnimationController> get animationControllers => _controller!;
 }

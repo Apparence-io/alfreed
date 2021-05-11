@@ -20,6 +20,9 @@ abstract class ContentView {
 
   /// calls stop & dispose for each animation(s)
   Future<void> disposeAnimation();
+
+  // if you prefer controll animation inside your presenter
+  List<AnimationController> get animationControllers;
 }
 
 class MVVMContent<P extends Presenter, M> extends StatefulWidget {
@@ -99,4 +102,8 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
 
   @override
   Future<void> disposeAnimation() => throw UnimplementedError();
+
+  @override
+  List<AnimationController> get animationControllers =>
+      throw UnimplementedError();
 }

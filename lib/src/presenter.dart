@@ -59,6 +59,14 @@ abstract class Presenter<T, I extends AlfreedView> {
   /// if you mock [I] this will have no effect when calling forceRefreshView
   void refreshView() => _view?.forceRefreshView();
 
+  /// call this to refresh animations
+  /// this will start animations from your animation listener of MvvmBuilder
+  Future<void> refreshAnimations() async => _view?.refreshAnimation();
+
   /// set the view reference to presenter
   set viewRef(ContentView view) => _view = view;
+
+  /// animate your view using controllers
+  List<AnimationController> get animationControllers =>
+      _view!.animationControllers;
 }

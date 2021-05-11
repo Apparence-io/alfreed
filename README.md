@@ -1,4 +1,10 @@
-# alfreed
+<p align="center">
+<a href="https://github.com/felangel/bloc/actions"><img src="https://github.com/felangel/bloc/workflows/build/badge.svg" alt="build"></a>
+<a href="https://codecov.io/gh/Apparence-io/alfreed"><img src="https://codecov.io/gh/Apparence-io/alfreed/branch/master/graph/badge.svg?token=WYSESJJY0P"/></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
+</p>
+
+# Alfreed
 [Apparence.io](https://apparence.io) studio flutter management library.
 This lib is used for our apps and is open for all. 
 

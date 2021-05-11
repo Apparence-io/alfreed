@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 enum WindowSize { phone, tablet, large, xlarge }
@@ -60,8 +62,10 @@ class Device {
 
 class AlfreedContext {
   final BuildContext buildContext;
+  // animations attributes
   final AnimationController? animationController;
   final List<AnimationController>? animationsControllers;
+  // device info
   Device device;
 
   AlfreedContext(
@@ -71,4 +75,8 @@ class AlfreedContext {
   }) : this.device = Device.fromSize(MediaQuery.of(buildContext).size);
 
   Orientation get orientation => MediaQuery.of(buildContext).orientation;
+
+  bool isDesktop = Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+
+  bool isMobile = Platform.isAndroid || Platform.isIOS;
 }

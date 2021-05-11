@@ -18,6 +18,7 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
   void didChangeDependencies() {
     super.didChangeDependencies();
     presenter.viewRef = this;
+    _controller = widget.singleAnimController!(this);
     if (!hasInit) {
       hasInit = true;
       presenter.onInit();
@@ -25,7 +26,6 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
         presenter.afterViewInit();
       });
     }
-    _controller = widget.singleAnimController!(this);
   }
 
   @override
@@ -51,7 +51,8 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
     }
   }
 
-  AlfreedContext get mvvmContext => AlfreedContext(context);
+  AlfreedContext get mvvmContext =>
+      AlfreedContext(context, animationController: _controller);
 
   P get presenter => PresenterInherited.of<P, M>(context).presenter;
 
@@ -63,8 +64,9 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
       builder(mvvmContext, presenter, presenter.state);
 
   @override
-  Future<void> refreshAnimation() async =>
-      animListener(mvvmContext, presenter, presenter.state);
+  Future<void> refreshAnimation() async {
+    return animListener(mvvmContext, presenter, presenter.state);
+  }
 
   @override
   Future<void> disposeAnimation() async {
@@ -73,4 +75,7 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
       _controller!.dispose();
     }
   }
+
+  @override
+  List<AnimationController> get animationControllers => [_controller!];
 }

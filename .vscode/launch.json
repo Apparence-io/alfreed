@@ -5,11 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "[Android] example",
-            // "cwd": "example",
+            "name": "example",
             "request": "launch",
             "type": "dart",
             "program": "example/lib/simple/main.dart"
+        },
+        {
+            "name": "anim example",
+            "request": "launch",
+            "type": "dart",
+            "program": "example/lib/animated/main.dart",
         },
         {
             "name": "[Web] example",
@@ -17,6 +22,14 @@
             "request": "launch",
             "type": "dart",
             "program": "example/lib/simple/main.dart",
+            "args": ["-d","chrome"]
+        },
+        {
+            "name": "[Web] anim example",
+            // "cwd": "example",
+            "request": "launch",
+            "type": "dart",
+            "program": "example/lib/animated/main.dart",
             "args": ["-d","chrome"]
         }
     ]
