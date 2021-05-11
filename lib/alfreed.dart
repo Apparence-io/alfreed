@@ -5,3 +5,4 @@
 
 export './src/presenter.dart';
 export './src/page_builder.dart';
+export './src/utils.dart';

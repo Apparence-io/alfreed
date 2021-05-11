@@ -11,10 +11,19 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
   @override
   Future onInit() async {
     this.state!.todoList = [];
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 4; i++) {
       this.state!.todoList!.add(new TodoModel("TODO $i", "my todo task $i"));
     }
     this.refreshView();
+  }
+
+  void addTodo(String s) {
+    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+  }
+
+  void addTodoWithRefresh(String s) {
+    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    refreshView();
   }
 
   onClickItem(int index) {

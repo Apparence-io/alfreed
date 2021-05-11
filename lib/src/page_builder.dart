@@ -7,6 +7,7 @@ import 'content_builder.dart';
 /// builds a presenter
 typedef PresenterBuilder<P extends Presenter> = P Function(BuildContext context);
 
+/// builds the interface that the presenter can call to call the view
 typedef AlfreedViewBuilder<I extends AlfreedView> = I Function(BuildContext context);
 
 /// functions to handle animation state without refresh page
@@ -48,6 +49,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
     required AlfreedViewBuilder<I> interfaceBuilder,
   }) =>
       AlfreedPageBuilder._(
+        key: key,
         presenterBuilder: presenterBuilder,
         builder: builder,
         interfaceBuilder: interfaceBuilder,
@@ -62,6 +64,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
     required MvvmAnimationControllerBuilder? singleAnimControllerBuilder,
   }) =>
       AlfreedPageBuilder._(
+          key: key,
           presenterBuilder: presenterBuilder,
           builder: builder,
           interfaceBuilder: interfaceBuilder,
@@ -77,6 +80,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
     required MvvmAnimationsControllerBuilder? multipleAnimControllerBuilder,
   }) =>
       AlfreedPageBuilder._(
+          key: key,
           presenterBuilder: presenterBuilder,
           builder: builder,
           interfaceBuilder: interfaceBuilder,

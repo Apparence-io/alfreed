@@ -1,11 +1,12 @@
-import 'package:alfreed/alfreed.dart';
-import 'package:alfreed_example/simple/main.dart';
-import 'package:alfreed_example/simple/model.dart';
-import 'package:alfreed_example/simple/presenter.dart';
+import 'package:alfreed/src/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'component.dart';
+
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   testWidgets('Builds page correctly using alfreed', (WidgetTester tester) async {
     await tester.pumpWidget(SimpleBuilderApp());
     expect(find.text('my todo task 1'), findsOneWidget);
