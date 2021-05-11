@@ -80,6 +80,18 @@ Route<dynamic> route(RouteSettings settings) {
 }
 ```
 
+## Responsive state management
+Our build method contain a special context named ``ÀlfredContext```. 
+This class contains a ```Device``` attribute you can use to make your view for different size of devices. 
+> We used twitter bootstrap sizes ref to create range of devices
+
+Device type can be :
+* phone (***0px - 576px]***)
+* tablet (***[576px - 992px]***)
+* large (***[992px - 1200px]***)
+* xlarge (***more than 1920px large***)
+
+
 ## Test
 
 ### Get presenter ref
@@ -92,6 +104,28 @@ var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
 * The Key must be unique and added to the ```AlfreedPageBuilder``` seen on step (***Create a page builder***)
 * The application must be started using a pumpWidget
 * the page is correctly build
+
+Example of using: 
+```dart
+var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+  key: ValueKey("presenter"),
+  builder: (ctx, presenter, model) {
+    return Scaffold(
+      floatingActionButton: ctx.device < Device.large()
+          ? FloatingActionButton(
+              backgroundColor: Colors.redAccent,
+              onPressed: () =>
+                  presenter.addTodoWithRefresh("Button Todo created"),
+              child: Icon(Icons.plus_one),
+            )
+          : null,
+    );
+  },
+  presenterBuilder: (context) => MyPresenter(),
+  interfaceBuilder: (context) => ViewInterface(context),
+);
+```
+Here our floating button will be available only for devices smaller than large (phone and tablets).
 
 ### Mock presenter
 Prefer using a real presenter but in some case this helps. 
