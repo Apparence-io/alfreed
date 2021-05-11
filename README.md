@@ -81,7 +81,7 @@ Route<dynamic> route(RouteSettings settings) {
 ```
 
 ## Responsive state management
-Our build method contain a special context named ``ÀlfredContext```. 
+Our build method contain a special context named ```AlfredContext```. 
 This class contains a ```Device``` attribute you can use to make your view for different size of devices. 
 > We used twitter bootstrap sizes ref to create range of devices
 
