@@ -1,15 +1,6 @@
 name: Alfreed
 
-on:
-  push:
-    paths:
-      - "./**"
-      - ".github/workflows/flutter_ci.yaml"
-
-  pull_request:
-    paths:
-      - "./**"
-      - ".github/workflows/flutter_ci.yaml"
+on: [push, pull_request]
 
 jobs:
   build:
