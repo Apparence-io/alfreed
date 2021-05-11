@@ -4,9 +4,6 @@ on: [push, pull_request]
 
 jobs:
   build:
-    defaults:
-      run:
-        working-directory: packages/alfreed
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
