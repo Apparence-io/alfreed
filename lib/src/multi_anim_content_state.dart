@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
 import 'content_builder.dart';
+import 'models/anim.dart';
 
 class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
     extends State<MVVMContent>
     with TickerProviderStateMixin
     implements ContentView {
-  List<AnimationController>? _controller;
+  Map<String, AlfreedAnimation>? _animations;
   final MvvmAnimationListener<P, M> animListener;
   bool hasInit = false;
 
@@ -18,7 +19,7 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
   void didChangeDependencies() {
     super.didChangeDependencies();
     presenter.viewRef = this;
-    _controller = widget.multipleAnimController!(this);
+    _animations = widget.multipleAnimController!(this);
     if (!hasInit) {
       hasInit = true;
       presenter.onInit();
@@ -37,11 +38,9 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
 
   @override
   void deactivate() {
-    // presenter.onDestroy();
-    // Dispose all animations
+    presenter.onDeactivate();
     this.disposeAnimation();
     super.deactivate();
-    // presenter.afterViewDestroyed();
   }
 
   @override
@@ -52,7 +51,7 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
   }
 
   AlfreedContext get mvvmContext =>
-      AlfreedContext(context, animationsControllers: _controller);
+      AlfreedContext(context, animations: _animations);
 
   P get presenter => PresenterInherited.of<P, M>(context).presenter;
 
@@ -69,14 +68,14 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
 
   @override
   Future<void> disposeAnimation() async {
-    if (_controller != null && _controller!.length > 0) {
-      for (var controller in _controller!) {
-        controller.stop();
-        controller.dispose();
+    if (_animations != null && _animations!.length > 0) {
+      for (var el in _animations!.values) {
+        el.controller.stop();
+        el.controller.dispose();
       }
     }
   }
 
   @override
-  List<AnimationController> get animationControllers => _controller!;
+  Map<String, AlfreedAnimation> get animations => _animations!;
 }

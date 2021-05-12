@@ -1,3 +1,4 @@
+import 'package:alfreed/src/single_anim_content_state.dart';
 import 'package:alfreed/src/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,6 +38,27 @@ void main() {
       await tester.tap(floatingFinder);
       await tester.pumpAndSettle(Duration(milliseconds: 100));
       expect(find.text('Button Todo created'), findsOneWidget);
+    });
+  });
+
+  group('Animated builder errors', () {
+    testWidgets(
+        'Provide multiple animation using single animate factory -> throw',
+        (WidgetTester tester) async {
+      var exceptionRes;
+      FlutterError.onError = (details) {
+        exceptionRes = details.exception;
+      };
+      Route<dynamic> route(RouteSettings settings) =>
+          MaterialPageRoute(builder: pageWithMultiAnimOnSingle.build);
+      await tester.pumpWidget(MaterialApp(onGenerateRoute: route));
+      FlutterError.onError = (details) => FlutterError.presentError(details);
+      expect(exceptionRes, isNotNull);
+      expect(exceptionRes, isInstanceOf<SingleAnimationException>());
+      expect(
+          exceptionRes.toString(),
+          contains(
+              'You cannot provide more than one animation in a single animated page'));
     });
   });
 }

@@ -62,13 +62,29 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
 var myPageBuilder =
     AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animatedMulti(
   key: ValueKey("presenter"),
-  multipleAnimControllerBuilder: (ticker) => [
-    AnimationController(vsync: ticker, duration: Duration(seconds: 1)),
-    AnimationController(vsync: ticker, duration: Duration(seconds: 1)),
-  ],
+  multipleAnimControllerBuilder: (ticker) {
+    //creating controller 1
+    var controller1 =
+        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation = CurvedAnimation(
+        parent: controller1, curve: Interval(0, .4, curve: Curves.easeIn));
+
+    //creating controller 2
+    var controller2 =
+        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation1 = CurvedAnimation(
+        parent: controller2, curve: Interval(0, .6, curve: Curves.easeIn));
+    var animation2 = CurvedAnimation(
+        parent: controller2, curve: Interval(0, .6, curve: Curves.easeIn));
+    return {
+      'page': AlfreedAnimation(controller1, subAnimations: [animation]),
+      'items':
+          AlfreedAnimation(controller2, subAnimations: [animation1, animation2])
+    };
+  },
   animListener: (context, presenter, model) {
     if (model.animate) {
-      context.animationsControllers!.first.forward();
+      context.animations!['page']!.controller.forward();
     }
   },
   builder: (ctx, presenter, model) {

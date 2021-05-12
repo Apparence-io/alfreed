@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
+import 'models/anim.dart';
+
 enum WindowSize { phone, tablet, large, xlarge }
 
 const sizes = {
@@ -62,16 +64,12 @@ class Device {
 
 class AlfreedContext {
   final BuildContext buildContext;
-  // animations attributes
-  final AnimationController? animationController;
-  final List<AnimationController>? animationsControllers;
-  // device info
+  final Map<String, AlfreedAnimation>? animations;
   Device device;
 
   AlfreedContext(
     this.buildContext, {
-    this.animationController,
-    this.animationsControllers,
+    this.animations,
   }) : this.device = Device.fromSize(MediaQuery.of(buildContext).size);
 
   Orientation get orientation => MediaQuery.of(buildContext).orientation;
@@ -79,4 +77,6 @@ class AlfreedContext {
   bool isDesktop = Platform.isWindows || Platform.isLinux || Platform.isMacOS;
 
   bool isMobile = Platform.isAndroid || Platform.isIOS;
+
+  NavigatorState get navigator => Navigator.of(buildContext);
 }

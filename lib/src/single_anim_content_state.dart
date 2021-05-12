@@ -1,14 +1,28 @@
 import 'package:alfreed/src/context_wrapper.dart';
+import 'package:alfreed/src/models/anim.dart';
 import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
 import 'content_builder.dart';
 
+class SingleAnimationException implements Exception {
+  String message;
+
+  SingleAnimationException._(this.message);
+
+  factory SingleAnimationException.multipleAnim() =>
+      SingleAnimationException._(''' 
+    You cannot provide more than one animation in a single animated page
+    ''');
+
+  String toString() => "Exception: $message";
+}
+
 class MVVMSingleTickerProviderContentState<P extends Presenter, M>
     extends State<MVVMContent>
     with TickerProviderStateMixin
     implements ContentView {
-  AnimationController? _controller;
+  Map<String, AlfreedAnimation>? _animation;
   final MvvmAnimationListener<P, M> animListener;
   bool hasInit = false;
 
@@ -18,7 +32,8 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
   void didChangeDependencies() {
     super.didChangeDependencies();
     presenter.viewRef = this;
-    _controller = widget.singleAnimController!(this);
+    _animation = widget.singleAnimController!(this);
+    if (_animation!.length > 1) throw SingleAnimationException.multipleAnim();
     if (!hasInit) {
       hasInit = true;
       presenter.onInit();
@@ -37,11 +52,9 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
 
   @override
   void deactivate() {
-    // presenter.onDestroy();
-    // Dispose all animations
+    presenter.onDeactivate();
     this.disposeAnimation();
     super.deactivate();
-    // presenter.afterViewDestroyed();
   }
 
   @override
@@ -52,7 +65,7 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
   }
 
   AlfreedContext get mvvmContext =>
-      AlfreedContext(context, animationController: _controller);
+      AlfreedContext(context, animations: _animation);
 
   P get presenter => PresenterInherited.of<P, M>(context).presenter;
 
@@ -70,12 +83,14 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
 
   @override
   Future<void> disposeAnimation() async {
-    if (_controller != null) {
-      _controller!.stop();
-      _controller!.dispose();
+    if (_animation != null && _animation!.length > 0) {
+      for (var el in _animation!.values) {
+        el.controller.stop();
+        el.controller.dispose();
+      }
     }
   }
 
   @override
-  List<AnimationController> get animationControllers => [_controller!];
+  Map<String, AlfreedAnimation> get animations => _animation!;
 }

@@ -20,20 +20,30 @@ class ViewInterface extends AlfreedView {
 var myPageBuilder =
     AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
   key: ValueKey("presenter"),
-  singleAnimControllerBuilder: (ticker) =>
-      AnimationController(vsync: ticker, duration: Duration(seconds: 1)),
+  singleAnimControllerBuilder: (ticker) {
+    var controller =
+        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation1 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+    var animation2 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+    return {
+      '': AlfreedAnimation(controller, subAnimations: [animation1, animation2])
+    };
+  },
   animListener: (context, presenter, model) {
     if (model.animate) {
-      context.animationController!.forward();
+      context.animations!.values.first.controller.forward(); //SIMPLIFY
     }
   },
   builder: (ctx, presenter, model) {
     return Scaffold(
       appBar: AppBar(title: Text(model.title ?? "")),
       body: AnimatedBuilder(
-        animation: ctx.animationController!,
-        builder: (context, child) =>
-            Opacity(opacity: ctx.animationController!.value, child: child!),
+        animation: ctx.animations!.values.first.subAnimations![0],
+        builder: (context, child) => Opacity(
+            opacity: ctx.animations!.values.first.subAnimations![0].value,
+            child: child!),
         child: ListView.separated(
             itemBuilder: (context, index) => InkWell(
                   onTap: () => presenter.onClickItem(index),

@@ -1,3 +1,4 @@
+import 'package:alfreed/src/models/anim.dart';
 import 'package:flutter/material.dart';
 
 import 'context_wrapper.dart';
@@ -22,12 +23,12 @@ abstract class ContentView {
   Future<void> disposeAnimation();
 
   // if you prefer controll animation inside your presenter
-  List<AnimationController> get animationControllers;
+  Map<String, AlfreedAnimation> get animations;
 }
 
 class MVVMContent<P extends Presenter, M> extends StatefulWidget {
-  late final MvvmAnimationControllerBuilder? singleAnimController;
-  late final MvvmAnimationsControllerBuilder? multipleAnimController;
+  late final AlfreedAnimationBuilder? singleAnimController;
+  late final AlfreedAnimationsBuilder? multipleAnimController;
   late final MvvmAnimationListener<P, M>? animListener;
 
   MVVMContent({
@@ -76,6 +77,8 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
 
   @override
   void deactivate() {
+    print("------ deactivate ---");
+    presenter.onDeactivate();
     super.deactivate();
   }
 
@@ -104,6 +107,5 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
   Future<void> disposeAnimation() => throw UnimplementedError();
 
   @override
-  List<AnimationController> get animationControllers =>
-      throw UnimplementedError();
+  Map<String, AlfreedAnimation> get animations => throw UnimplementedError();
 }

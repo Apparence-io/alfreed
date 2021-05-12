@@ -62,11 +62,20 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
 var myPageBuilder =
     AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
   key: ValueKey("presenter"),
-  singleAnimControllerBuilder: (ticker) =>
-      AnimationController(vsync: ticker, duration: Duration(seconds: 1)),
+  singleAnimControllerBuilder: (ticker) {
+    var controller =
+        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation1 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+    var animation2 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+    return {
+      '': AlfreedAnimation(controller, subAnimations: [animation1, animation2])
+    };
+  },
   animListener: (context, presenter, model) {
     if (model.animate) {
-      context.animationController!.forward();
+      context.animations!.values.first.controller.forward(); //SIMPLIFY
     }
   },
   builder: (ctx, presenter, model) {
@@ -88,6 +97,38 @@ var myPageBuilder =
         onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
         child: Icon(Icons.plus_one),
       ),
+    );
+  },
+  presenterBuilder: (context) => MyPresenter(),
+  interfaceBuilder: (context) => ViewInterface(context),
+);
+
+// this should throw as we provide multiple animations
+var pageWithMultiAnimOnSingle =
+    AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
+  key: ValueKey("presenter"),
+  singleAnimControllerBuilder: (ticker) {
+    var controller =
+        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation1 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+    var animation2 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+    return {
+      '1':
+          AlfreedAnimation(controller, subAnimations: [animation1, animation2]),
+      '2':
+          AlfreedAnimation(controller, subAnimations: [animation1, animation2]),
+    };
+  },
+  animListener: (context, presenter, model) {
+    if (model.animate) {
+      context.animations!.values.first.controller.forward();
+    }
+  },
+  builder: (ctx, presenter, model) {
+    return Scaffold(
+      appBar: AppBar(title: Text(model.title ?? "")),
     );
   },
   presenterBuilder: (context) => MyPresenter(),

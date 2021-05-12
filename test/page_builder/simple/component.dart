@@ -13,6 +13,7 @@ class ViewInterface extends AlfreedView {
 class MyModel {
   String? title;
   List<TodoModel>? todoList;
+  bool deactivated = false;
 }
 
 class TodoModel {
@@ -34,6 +35,11 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
       this.state!.todoList!.add(new TodoModel("TODO $i", "my todo task $i"));
     }
     this.refreshView();
+  }
+
+  @override
+  void onDeactivate() {
+    state!.deactivated = true;
   }
 
   void addTodo(String s) {
@@ -61,7 +67,17 @@ var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
   builder: (ctx, presenter, model) {
     return Scaffold(
       // key: _scaffoldKey,
-      appBar: AppBar(title: Text(model.title ?? "")),
+      appBar: AppBar(
+        title: Text(model.title ?? ""),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add_alert),
+            tooltip: 'Show Snackbar',
+            onPressed: () =>
+                Navigator.of(ctx.buildContext).pushReplacementNamed('/second'),
+          ),
+        ],
+      ),
       body: ListView.separated(
           itemBuilder: (context, index) => InkWell(
                 onTap: () => presenter.onClickItem(index),
@@ -83,9 +99,24 @@ var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
   interfaceBuilder: (context) => ViewInterface(context),
 );
 
+var secondPage = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+  key: ValueKey("presenter"),
+  builder: (ctx, presenter, model) {
+    return Scaffold(
+      body: Center(child: Text("second page")),
+    );
+  },
+  presenterBuilder: (context) => MyPresenter(),
+  interfaceBuilder: (context) => ViewInterface(context),
+);
+
 Route<dynamic> route(RouteSettings settings) {
-  print("...[call route] ${settings.name}");
-  return MaterialPageRoute(builder: myPageBuilder.build);
+  switch (settings.name) {
+    case '/second':
+      return MaterialPageRoute(builder: secondPage.build);
+    default:
+      return MaterialPageRoute(builder: myPageBuilder.build);
+  }
 }
 
 class SimpleBuilderApp extends StatelessWidget {

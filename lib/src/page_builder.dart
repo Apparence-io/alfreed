@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
 import 'content_builder.dart';
+import 'models/anim.dart';
 
 /// builds a presenter
 typedef PresenterBuilder<P extends Presenter> = P Function(
@@ -16,12 +17,12 @@ typedef AlfreedViewBuilder<I extends AlfreedView> = I Function(
 typedef MvvmAnimationListener<P extends Presenter, M> = void Function(
     AlfreedContext context, P presenter, M model);
 
-/// builds a single [AnimationController]
-typedef MvvmAnimationControllerBuilder = AnimationController Function(
+/// functions to create animations using a string key to find your animation back
+typedef AlfreedAnimationsBuilder = Map<String, AlfreedAnimation> Function(
     TickerProvider tickerProvider);
 
-/// builds a list of [AnimationController]
-typedef MvvmAnimationsControllerBuilder = List<AnimationController> Function(
+/// builds a single [AlfreedAnimation]
+typedef AlfreedAnimationBuilder = Map<String, AlfreedAnimation> Function(
     TickerProvider tickerProvider);
 
 class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
@@ -32,8 +33,8 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
   final ContentBuilder<P, M> builder;
   final AlfreedViewBuilder<I> interfaceBuilder;
   MvvmAnimationListener<P, M>? animListener;
-  MvvmAnimationControllerBuilder? singleAnimControllerBuilder;
-  MvvmAnimationsControllerBuilder? multipleAnimControllerBuilder;
+  AlfreedAnimationBuilder? singleAnimControllerBuilder;
+  AlfreedAnimationsBuilder? multipleAnimControllerBuilder;
   bool forceRebuild;
 
   AlfreedPageBuilder._({
@@ -66,7 +67,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
     required ContentBuilder<P, M> builder,
     required AlfreedViewBuilder<I> interfaceBuilder,
     required MvvmAnimationListener<P, M>? animListener,
-    required MvvmAnimationControllerBuilder? singleAnimControllerBuilder,
+    required AlfreedAnimationBuilder? singleAnimControllerBuilder,
   }) =>
       AlfreedPageBuilder._(
           key: key,
@@ -82,7 +83,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
     required ContentBuilder<P, M> builder,
     required AlfreedViewBuilder<I> interfaceBuilder,
     required MvvmAnimationListener<P, M>? animListener,
-    required MvvmAnimationsControllerBuilder? multipleAnimControllerBuilder,
+    required AlfreedAnimationsBuilder? multipleAnimControllerBuilder,
   }) =>
       AlfreedPageBuilder._(
           key: key,

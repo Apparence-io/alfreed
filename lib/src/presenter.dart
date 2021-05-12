@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'content_builder.dart';
+import 'models/anim.dart';
 
 /// Wraps presenter inside a persistent Widget
 class PresenterInherited<T extends Presenter, M> extends InheritedWidget {
@@ -55,6 +56,9 @@ abstract class Presenter<T, I extends AlfreedView> {
   /// called when view has been drawn for the 1st time
   void afterViewInit() {}
 
+  /// called when view is pop out or hidden
+  void onDeactivate() {}
+
   /// call this to refresh the view
   /// if you mock [I] this will have no effect when calling forceRefreshView
   void refreshView() => _view?.forceRefreshView();
@@ -67,6 +71,5 @@ abstract class Presenter<T, I extends AlfreedView> {
   set viewRef(ContentView view) => _view = view;
 
   /// animate your view using controllers
-  List<AnimationController> get animationControllers =>
-      _view!.animationControllers;
+  Map<String, AlfreedAnimation>? get animations => _view?.animations;
 }

@@ -16,7 +16,7 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
     }
     this.state!.animate = true;
     this.refreshView();
-    animationControllers[0].forward();
+    animations!.values.first.controller.forward();
   }
 
   void addTodo(String s) {

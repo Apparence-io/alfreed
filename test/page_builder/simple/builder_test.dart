@@ -36,4 +36,19 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 100));
     expect(find.text('Button Todo created'), findsOneWidget);
   });
+
+  testWidgets(
+      'route to page1 then second page -> second page is shown, deactivated is called',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(SimpleBuilderApp());
+    var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
+        tester, ValueKey("presenter"));
+    var secondPageButton = find.byType(IconButton);
+    await tester.tap(secondPageButton.first);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    expect(find.text('second page'), findsOneWidget);
+    expect(presenter.state!.deactivated, isTrue);
+  });
 }
