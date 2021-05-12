@@ -7,7 +7,7 @@ import 'page_builder.dart';
 import 'presenter.dart';
 import 'single_anim_content_state.dart';
 
-/// builds a child for a [MVVMContent]
+/// builds a child for a [ContentBuilder]
 typedef ContentBuilder<P extends Presenter, M> = Widget Function(
     AlfreedContext context, P presenter, M model);
 

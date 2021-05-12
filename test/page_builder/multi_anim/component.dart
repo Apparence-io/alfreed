@@ -89,7 +89,6 @@ var myPageBuilder =
   },
   builder: (ctx, presenter, model) {
     return Scaffold(
-      // key: _scaffoldKey,
       appBar: AppBar(title: Text(model.title ?? "")),
       body: ListView.separated(
           itemBuilder: (context, index) => InkWell(
