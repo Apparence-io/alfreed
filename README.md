@@ -71,7 +71,6 @@ class ViewInterface extends AlfreedView {
 ```
 
 ## Routing
-
 You can wrap our builder directly in your app router. 
 <br/>Like this:
 
@@ -97,20 +96,6 @@ Device type can be :
 * large (***[992px - 1200px]***)
 * xlarge (***more than 1920px large***)
 
-
-## Test
-
-### Get presenter ref
-Use ```AlfreedUtils``` to get a reference of your presenter instance. 
-```dart
-var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
-    tester, ValueKey("presenter"));
-```
-
-* The Key must be unique and added to the ```AlfreedPageBuilder``` seen on step (***Create a page builder***)
-* The application must be started using a pumpWidget
-* the page is correctly build
-
 Example of using: 
 ```dart
 var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
@@ -132,6 +117,63 @@ var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
 );
 ```
 Here our floating button will be available only for devices smaller than large (phone and tablets).
+
+<hr/>
+
+## Animations
+To create animations on your page you can use ```AlfreedPageBuilder``` factories:
+- ```AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(...)``` for single animation controller 
+- ```AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animatedMulti(...)``` or multiple animations controller
+Then you have access to builder methods for your animations.
+
+Basically animations are accessed through a map where you name them. This can help finding each animations back when you need them.  
+
+> Animation(s) controller(s) and their animations will be available in your presenter and AlfreedPageBuilder builder methods within context. 
+
+#### example:
+```dart
+var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
+  singleAnimControllerBuilder: (ticker) {
+    var controller =
+        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation1 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+    var animation2 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+    return {
+      '': AlfreedAnimation(controller, subAnimations: [animation1, animation2])
+    };
+  },
+  animListener: (context, presenter, model) {
+    if (model.animate) {
+      context.animations!.values.first.controller.forward(); //SIMPLIFY
+    }
+  },
+  builder: (ctx, presenter, model) => ...,
+  presenterBuilder: (context) => MyPresenter(),
+  interfaceBuilder: (context) => ViewInterface(context),
+);
+```
+
+Access to animations within presenter and start the first one: 
+```dart
+animations!.values.first.controller.forward();
+```
+
+<hr/>
+
+## Test
+
+### Get presenter ref
+Use ```AlfreedUtils``` to get a reference of your presenter instance. 
+```dart
+var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
+    tester, ValueKey("presenter"));
+```
+
+* The Key must be unique and added to the ```AlfreedPageBuilder``` seen on step (***Create a page builder***)
+* The application must be started using a pumpWidget
+* the page is correctly build
 
 ### Mock presenter
 Prefer using a real presenter but in some case this helps. 
