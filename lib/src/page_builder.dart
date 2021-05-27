@@ -36,6 +36,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
   AlfreedAnimationBuilder? singleAnimControllerBuilder;
   AlfreedAnimationsBuilder? multipleAnimControllerBuilder;
   bool forceRebuild;
+  Object? args;
 
   AlfreedPageBuilder._({
     this.key,
@@ -109,6 +110,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
       _presenter = presenterBuilder(context);
       _presenter!.view = interfaceBuilder(context);
     }
+    _presenter!.args = args;
     // Widget content;
     Widget content = MVVMContent<P, M>(
       singleAnimController: singleAnimControllerBuilder,

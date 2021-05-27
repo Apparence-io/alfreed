@@ -30,11 +30,21 @@ void main() {
   testWidgets('Press add todo from floating button -> a new Todo is available',
       (WidgetTester tester) async {
     await tester.pumpWidget(SimpleBuilderApp());
+    var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
+        tester, ValueKey("presenter"));
     var floatingFinder = find.byType(FloatingActionButton);
     expect(find.text('Button Todo created'), findsNothing);
     await tester.tap(floatingFinder);
     await tester.pumpAndSettle(Duration(milliseconds: 100));
     expect(find.text('Button Todo created'), findsOneWidget);
+    expect(presenter.state!.todoList!.length, equals(5));
+  });
+
+  testWidgets('state is reset after rebuild', (WidgetTester tester) async {
+    await tester.pumpWidget(SimpleBuilderApp());
+    var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
+        tester, ValueKey("presenter"));
+    expect(presenter.state!.todoList!.length, equals(4));
   });
 
   testWidgets(
@@ -46,9 +56,22 @@ void main() {
     var secondPageButton = find.byType(IconButton);
     await tester.tap(secondPageButton.first);
     await tester.pumpAndSettle(Duration(milliseconds: 100));
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
     expect(find.text('second page'), findsOneWidget);
     expect(presenter.state!.deactivated, isTrue);
+  });
+
+  testWidgets(
+      'route to page1 then second page -> second page is shown using arguments',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(SimpleBuilderApp());
+    var secondPageButton = find.byType(IconButton);
+    await tester.tap(secondPageButton.first);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
+        tester, ValueKey("presenter"));
+    expect(find.text('second page'), findsOneWidget);
+    expect(presenter.args, isNotNull);
+    var pageArgs = presenter.args as PageArguments;
+    expect(pageArgs.title, "test");
   });
 }

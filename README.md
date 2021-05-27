@@ -160,6 +160,20 @@ Access to animations within presenter and start the first one:
 animations!.values.first.controller.forward();
 ```
 
+## Page arguments
+You can pass arguments from routing directly to your presenter like this
+```dart
+Route<dynamic> route(RouteSettings settings) {
+  switch (settings.name) {
+    case '/second':
+      secondPage.args = settings.arguments;
+      return MaterialPageRoute(builder: secondPage.build);
+    default:
+      return MaterialPageRoute(builder: myPageBuilder.build);
+  }
+}
+```
+
 <hr/>
 
 ## Test

@@ -47,6 +47,9 @@ abstract class Presenter<T, I extends AlfreedView> {
   /// Model containing the current state of the view
   T? state;
 
+  /// arguments from route
+  Object? args;
+
   /// Container controlling the current state of the view
   Presenter({required this.state});
 

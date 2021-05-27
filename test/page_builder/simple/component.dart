@@ -62,6 +62,12 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
   }
 }
 
+class PageArguments {
+  String title;
+
+  PageArguments(this.title);
+}
+
 var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
   key: ValueKey("presenter"),
   builder: (ctx, presenter, model) {
@@ -73,8 +79,9 @@ var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
           IconButton(
             icon: const Icon(Icons.add_alert),
             tooltip: 'Show Snackbar',
-            onPressed: () =>
-                Navigator.of(ctx.buildContext).pushReplacementNamed('/second'),
+            onPressed: () => Navigator.of(ctx.buildContext)
+                .pushReplacementNamed('/second',
+                    arguments: PageArguments("test")),
           ),
         ],
       ),
@@ -113,6 +120,7 @@ var secondPage = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
 Route<dynamic> route(RouteSettings settings) {
   switch (settings.name) {
     case '/second':
+      secondPage.args = settings.arguments;
       return MaterialPageRoute(builder: secondPage.build);
     default:
       return MaterialPageRoute(builder: myPageBuilder.build);
