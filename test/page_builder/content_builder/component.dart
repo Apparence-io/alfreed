@@ -1,5 +1,9 @@
 import 'package:alfreed/alfreed.dart';
 import 'package:flutter/material.dart';
+import 'package:mockito/mockito.dart';
+
+class MyPresenterMock<MyModel, ViewInterface> extends Mock
+    implements MyPresenter {}
 
 class ViewInterface extends AlfreedView {
   ViewInterface(BuildContext context) : super(context: context);
@@ -31,7 +35,7 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
   }
 
   @override
-  Future onInit() async {
+  void onInit() {
     for (int i = 0; i < 4; i++) {
       this.state!.todoList!.add(new TodoModel("TODO $i", "my todo task $i"));
     }
@@ -71,52 +75,11 @@ class PageArguments {
   PageArguments(this.title);
 }
 
-var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter"),
-  builder: (ctx, presenter, model) {
-    return Scaffold(
-      // key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(model.title ?? ""),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () => Navigator.of(ctx.buildContext)
-                .pushReplacementNamed('/second',
-                    arguments: PageArguments("test")),
-          ),
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => Navigator.of(ctx.buildContext).pushNamed('/page3'),
-          ),
-        ],
-      ),
-      body: ListView.separated(
-          itemBuilder: (context, index) => InkWell(
-                onTap: () => presenter.onClickItem(index),
-                child: ListTile(
-                  title: Text(model.todoList![index].title),
-                  subtitle: Text(model.todoList![index].subtitle),
-                ),
-              ),
-          separatorBuilder: (context, index) => Divider(height: 1),
-          itemCount: model.todoList?.length ?? 0),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.redAccent,
-        onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
-        child: Icon(Icons.plus_one),
-      ),
-    );
-  },
-  presenterBuilder: (context) => MyPresenter(),
-  interfaceBuilder: (context) => ViewInterface(context),
-);
-
 var secondPage = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
   key: ValueKey("presenter"),
   builder: (ctx, presenter, model) {
     return Scaffold(
+      appBar: AppBar(),
       body: Center(child: Text("second page")),
     );
   },
@@ -135,22 +98,3 @@ var page3 = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
   presenterBuilder: (context) => MyPresenter(),
   interfaceBuilder: (context) => ViewInterface(context),
 );
-
-Route<dynamic> route(RouteSettings settings) {
-  switch (settings.name) {
-    case '/second':
-      secondPage.args = settings.arguments;
-      return MaterialPageRoute(builder: secondPage.build);
-    case '/page3':
-      return MaterialPageRoute(builder: page3.build);
-    default:
-      return MaterialPageRoute(builder: myPageBuilder.build);
-  }
-}
-
-class SimpleBuilderApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(onGenerateRoute: route);
-  }
-}

@@ -77,7 +77,6 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
 
   @override
   void deactivate() {
-    print("------ deactivate ---");
     presenter.onDeactivate();
     super.deactivate();
   }

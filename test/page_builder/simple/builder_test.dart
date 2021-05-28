@@ -61,6 +61,33 @@ void main() {
   });
 
   testWidgets(
+      'go second page add todo, then pop page, go back to second page -> second page is on initial state',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(SimpleBuilderApp());
+    await tester.tap(find.byType(IconButton).first);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+
+    // show second page and add todo - back to page1
+    var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
+        tester, ValueKey("presenter"));
+    expect(presenter.state!.todoList!.length, equals(4));
+    presenter.addTodo("Second page");
+    expect(find.text('second page'), findsOneWidget);
+    expect(presenter.state!.todoList!.length, equals(5));
+    presenter.view.pushPage1();
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    expect(find.text('second page'), findsNothing);
+
+    // show second page again
+    await tester.tap(find.byType(IconButton).first);
+    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    var presenter2 = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
+        tester, ValueKey("presenter"));
+    expect(find.text('second page'), findsOneWidget);
+    expect(presenter2.state!.todoList!.length, equals(4));
+  });
+
+  testWidgets(
       'route to page1 then second page -> second page is shown using arguments',
       (WidgetTester tester) async {
     await tester.pumpWidget(SimpleBuilderApp());

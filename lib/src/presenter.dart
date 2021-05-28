@@ -36,10 +36,15 @@ abstract class AlfreedView {
   AlfreedView({required this.context});
 }
 
+enum PresenterState { CREATED, VIEW_CREATED, DISPOSED }
+
 /// This class must be overriden too
 abstract class Presenter<T, I extends AlfreedView> {
   /// the view where we build our page
   ContentView? _view;
+
+  /// Current lifecyle state
+  PresenterState? _presenterState;
 
   /// Interface defining the exposed methods of the view
   late I view;
@@ -54,13 +59,22 @@ abstract class Presenter<T, I extends AlfreedView> {
   Presenter({required this.state});
 
   /// called when view init
-  void onInit() {}
+  @mustCallSuper
+  void onInit() {
+    _presenterState = PresenterState.CREATED;
+  }
 
   /// called when view has been drawn for the 1st time
-  void afterViewInit() {}
+  @mustCallSuper
+  void afterViewInit() {
+    _presenterState = PresenterState.VIEW_CREATED;
+  }
 
   /// called when view is pop out or hidden
-  void onDeactivate() {}
+  @mustCallSuper
+  void onDeactivate() {
+    _presenterState = PresenterState.DISPOSED;
+  }
 
   /// call this to refresh the view
   /// if you mock [I] this will have no effect when calling forceRefreshView
@@ -75,4 +89,6 @@ abstract class Presenter<T, I extends AlfreedView> {
 
   /// animate your view using controllers
   Map<String, AlfreedAnimation>? get animations => _view?.animations;
+
+  PresenterState? get presenterState => _presenterState;
 }

@@ -1,6 +1,6 @@
 name: alfreed
 description: split your business logic easily
-version: 0.0.2
+version: 0.0.3
 homepage: https://apparence.io
 repository: https://github.com/Apparence-io/alfreed
 
@@ -15,6 +15,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: ^5.0.9
+  mocktail: ^0.1.3
 
 # flutter:
 #   plugin:
