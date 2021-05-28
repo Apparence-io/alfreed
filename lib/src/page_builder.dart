@@ -106,7 +106,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
         !(singleAnimControllerBuilder != null &&
             multipleAnimControllerBuilder != null),
         'Cannot have both a single and a multiple animation controller builder.');
-    if (_presenter == null || forceRebuild) {
+    if (_presenter == null || forceRebuild || _presenter!.view.context.hashCode != context.hashCode) {
       _presenter = presenterBuilder(context);
       _presenter!.view = interfaceBuilder(context);
     }
