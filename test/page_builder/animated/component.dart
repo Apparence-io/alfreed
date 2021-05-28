@@ -41,11 +41,17 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
   }
 
   void addTodo(String s) {
-    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this
+        .state!
+        .todoList!
+        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this
+        .state!
+        .todoList!
+        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
     refreshView();
   }
 
@@ -54,12 +60,16 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
   }
 }
 
-var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
+var myPageBuilder =
+    AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
   key: ValueKey("presenter"),
   singleAnimControllerBuilder: (ticker) {
-    var controller = AnimationController(vsync: ticker, duration: Duration(seconds: 1));
-    var animation1 = CurvedAnimation(parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
-    var animation2 = CurvedAnimation(parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+    var controller =
+        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation1 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+    var animation2 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
     return {
       '': AlfreedAnimation(controller, subAnimations: [animation1, animation2])
     };
@@ -95,15 +105,21 @@ var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.anim
 );
 
 // this should throw as we provide multiple animations
-var pageWithMultiAnimOnSingle = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
+var pageWithMultiAnimOnSingle =
+    AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
   key: ValueKey("presenter"),
   singleAnimControllerBuilder: (ticker) {
-    var controller = AnimationController(vsync: ticker, duration: Duration(seconds: 1));
-    var animation1 = CurvedAnimation(parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
-    var animation2 = CurvedAnimation(parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+    var controller =
+        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation1 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+    var animation2 = CurvedAnimation(
+        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
     return {
-      '1': AlfreedAnimation(controller, subAnimations: [animation1, animation2]),
-      '2': AlfreedAnimation(controller, subAnimations: [animation1, animation2]),
+      '1':
+          AlfreedAnimation(controller, subAnimations: [animation1, animation2]),
+      '2':
+          AlfreedAnimation(controller, subAnimations: [animation1, animation2]),
     };
   },
   animListener: (context, presenter, model) {
