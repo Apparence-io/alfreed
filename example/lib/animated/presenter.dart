@@ -17,20 +17,15 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
     this.state!.animate = true;
     this.refreshView();
     animations!.values.first.controller.forward();
+    super.onInit();
   }
 
   void addTodo(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
     refreshView();
   }
 

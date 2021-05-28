@@ -37,20 +37,15 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
     this.refreshView();
     state!.animate = true;
     refreshAnimations();
+    super.onInit();
   }
 
   void addTodo(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
     refreshView();
   }
 
@@ -59,27 +54,20 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
   }
 }
 
-var myPageBuilder =
-    AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animatedMulti(
+var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animatedMulti(
   key: ValueKey("presenter"),
   multipleAnimControllerBuilder: (ticker) {
     //creating controller 1
-    var controller1 =
-        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
-    var animation = CurvedAnimation(
-        parent: controller1, curve: Interval(0, .4, curve: Curves.easeIn));
+    var controller1 = AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation = CurvedAnimation(parent: controller1, curve: Interval(0, .4, curve: Curves.easeIn));
 
     //creating controller 2
-    var controller2 =
-        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
-    var animation1 = CurvedAnimation(
-        parent: controller2, curve: Interval(0, .6, curve: Curves.easeIn));
-    var animation2 = CurvedAnimation(
-        parent: controller2, curve: Interval(0, .6, curve: Curves.easeIn));
+    var controller2 = AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var animation1 = CurvedAnimation(parent: controller2, curve: Interval(0, .6, curve: Curves.easeIn));
+    var animation2 = CurvedAnimation(parent: controller2, curve: Interval(0, .6, curve: Curves.easeIn));
     return {
       'page': AlfreedAnimation(controller1, subAnimations: [animation]),
-      'items':
-          AlfreedAnimation(controller2, subAnimations: [animation1, animation2])
+      'items': AlfreedAnimation(controller2, subAnimations: [animation1, animation2])
     };
   },
   animListener: (context, presenter, model) {
