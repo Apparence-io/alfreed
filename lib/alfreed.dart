@@ -7,3 +7,4 @@ export './src/presenter.dart';
 export './src/context_wrapper.dart';
 export './src/page_builder.dart';
 export './src/models/anim.dart';
+export './src/page.dart';

@@ -71,80 +71,104 @@ class PageArguments {
   PageArguments(this.title);
 }
 
-var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter"),
-  builder: (ctx, presenter, model) {
-    return Scaffold(
-      // key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(model.title ?? ""),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () => Navigator.of(ctx.buildContext)
-                .pushReplacementNamed('/second',
-                    arguments: PageArguments("test")),
-          ),
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => Navigator.of(ctx.buildContext).pushNamed('/page3'),
-          ),
-        ],
-      ),
-      body: ListView.separated(
-          itemBuilder: (context, index) => InkWell(
-                onTap: () => presenter.onClickItem(index),
-                child: ListTile(
-                  title: Text(model.todoList![index].title),
-                  subtitle: Text(model.todoList![index].subtitle),
-                ),
+class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  FirstPage({Object? args}) : super(args: args);
+
+  @override
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
+      get alfreedPageBuilder {
+    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+      key: ValueKey("presenter"),
+      builder: (ctx, presenter, model) {
+        return Scaffold(
+          // key: _scaffoldKey,
+          appBar: AppBar(
+            title: Text(model.title ?? ""),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.add_alert),
+                tooltip: 'Show Snackbar',
+                onPressed: () => Navigator.of(ctx.buildContext)
+                    .pushReplacementNamed('/second',
+                        arguments: PageArguments("test")),
               ),
-          separatorBuilder: (context, index) => Divider(height: 1),
-          itemCount: model.todoList?.length ?? 0),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.redAccent,
-        onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
-        child: Icon(Icons.plus_one),
-      ),
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () =>
+                    Navigator.of(ctx.buildContext).pushNamed('/page3'),
+              ),
+            ],
+          ),
+          body: ListView.separated(
+              itemBuilder: (context, index) => InkWell(
+                    onTap: () => presenter.onClickItem(index),
+                    child: ListTile(
+                      title: Text(model.todoList![index].title),
+                      subtitle: Text(model.todoList![index].subtitle),
+                    ),
+                  ),
+              separatorBuilder: (context, index) => Divider(height: 1),
+              itemCount: model.todoList?.length ?? 0),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.redAccent,
+            onPressed: () =>
+                presenter.addTodoWithRefresh("Button Todo created"),
+            child: Icon(Icons.plus_one),
+          ),
+        );
+      },
+      presenterBuilder: (context) => MyPresenter(),
+      interfaceBuilder: (context) => ViewInterface(context),
     );
-  },
-  presenterBuilder: (context) => MyPresenter(),
-  interfaceBuilder: (context) => ViewInterface(context),
-);
+  }
+}
 
-var secondPage = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter"),
-  builder: (ctx, presenter, model) {
-    return Scaffold(
-      body: Center(child: Text("second page")),
-    );
-  },
-  presenterBuilder: (context) => MyPresenter(),
-  interfaceBuilder: (context) => ViewInterface(context),
-);
+class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  SecondPage({Object? args}) : super(args: args);
 
-var page3 = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter3"),
-  builder: (ctx, presenter, model) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(child: Text("page3")),
+  @override
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
+      get alfreedPageBuilder {
+    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+      key: ValueKey("presenter"),
+      builder: (ctx, presenter, model) {
+        return Scaffold(
+          body: Center(child: Text("second page")),
+        );
+      },
+      presenterBuilder: (context) => MyPresenter(),
+      interfaceBuilder: (context) => ViewInterface(context),
     );
-  },
-  presenterBuilder: (context) => MyPresenter(),
-  interfaceBuilder: (context) => ViewInterface(context),
-);
+  }
+}
+
+class ThirdPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  @override
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
+      get alfreedPageBuilder {
+    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+      key: ValueKey("presenter3"),
+      builder: (ctx, presenter, model) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: Center(child: Text("page3")),
+        );
+      },
+      presenterBuilder: (context) => MyPresenter(),
+      interfaceBuilder: (context) => ViewInterface(context),
+    );
+  }
+}
 
 Route<dynamic> route(RouteSettings settings) {
   switch (settings.name) {
     case '/second':
-      secondPage.args = settings.arguments;
-      return MaterialPageRoute(builder: secondPage.build);
+      return MaterialPageRoute(
+          builder: (_) => SecondPage(args: settings.arguments));
     case '/page3':
-      return MaterialPageRoute(builder: page3.build);
+      return MaterialPageRoute(builder: (_) => ThirdPage());
     default:
-      return MaterialPageRoute(builder: myPageBuilder.build);
+      return MaterialPageRoute(builder: (_) => FirstPage());
   }
 }
 

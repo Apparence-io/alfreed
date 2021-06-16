@@ -47,7 +47,9 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
     this.singleAnimControllerBuilder,
     this.multipleAnimControllerBuilder,
     this.forceRebuild = false,
-  });
+  }) {
+    print("construct AlfreedPageBuilder");
+  }
 
   factory AlfreedPageBuilder({
     Key? key,

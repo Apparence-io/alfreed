@@ -21,90 +21,105 @@ class ViewInterface extends AlfreedView {
   void pop() => Navigator.of(context).pop();
 }
 
-var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter"),
-  builder: (ctx, presenter, model) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(model.title ?? ""),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () =>
-                Navigator.of(ctx.buildContext).pushNamed('/second'),
-          ),
-        ],
-      ),
-      body: ListView.separated(
-          itemBuilder: (context, index) => InkWell(
-                onTap: () => presenter.onClickItem(index),
-                child: ListTile(
-                  title: Text(model.todoList![index].title),
-                  subtitle: Text(model.todoList![index].subtitle),
+class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  @override
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
+      get alfreedPageBuilder =>
+          AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+            key: ValueKey("presenter"),
+            builder: (ctx, presenter, model) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(model.title ?? ""),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.add_alert),
+                      tooltip: 'Show Snackbar',
+                      onPressed: () =>
+                          Navigator.of(ctx.buildContext).pushNamed('/second'),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.ac_unit_rounded),
+                      tooltip: 'pop Snackbar',
+                      onPressed: () => print("test"),
+                    ),
+                  ],
                 ),
-              ),
-          separatorBuilder: (context, index) => Divider(height: 1),
-          itemCount: model.todoList?.length ?? 0),
-      floatingActionButton: ctx.device < Device.large()
-          ? FloatingActionButton(
-              backgroundColor: Colors.redAccent,
-              onPressed: () =>
-                  presenter.addTodoWithRefresh("Button Todo created"),
-              child: Icon(Icons.plus_one),
-            )
-          : null,
-    );
-  },
-  presenterBuilder: (context) => MyPresenter(),
-  interfaceBuilder: (context) => ViewInterface(context),
-);
+                body: ListView.separated(
+                    itemBuilder: (context, index) => InkWell(
+                          onTap: () => presenter.onClickItem(index),
+                          child: ListTile(
+                            title: Text(model.todoList![index].title),
+                            subtitle: Text(model.todoList![index].subtitle),
+                          ),
+                        ),
+                    separatorBuilder: (context, index) => Divider(height: 1),
+                    itemCount: model.todoList?.length ?? 0),
+                floatingActionButton: ctx.device < Device.large()
+                    ? FloatingActionButton(
+                        backgroundColor: Colors.redAccent,
+                        onPressed: () =>
+                            presenter.addTodoWithRefresh("Button Todo created"),
+                        child: Icon(Icons.plus_one),
+                      )
+                    : null,
+              );
+            },
+            presenterBuilder: (context) => MyPresenter(),
+            interfaceBuilder: (context) => ViewInterface(context),
+          );
+}
 
-var secondPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter"),
-  builder: (ctx, presenter, model) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(model.title ?? ""),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.power_input),
-            tooltip: 'pop Snackbar',
-            onPressed: presenter.terminate,
-          ),
-        ],
-      ),
-      body: ListView.separated(
-          itemBuilder: (context, index) => InkWell(
-                onTap: () => presenter.onClickItem(index),
-                child: ListTile(
-                  title: Text(model.todoList![index].title),
-                  subtitle: Text(model.todoList![index].subtitle),
+class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  @override
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
+      get alfreedPageBuilder =>
+          AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+            key: ValueKey("presenter"),
+            builder: (ctx, presenter, model) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text(model.title ?? ""),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.power_input),
+                      tooltip: 'pop Snackbar',
+                      onPressed: presenter.terminate,
+                    ),
+                  ],
                 ),
-              ),
-          separatorBuilder: (context, index) => Divider(height: 1),
-          itemCount: model.todoList?.length ?? 0),
-      floatingActionButton: ctx.device < Device.large()
-          ? FloatingActionButton(
-              backgroundColor: Colors.redAccent,
-              onPressed: () =>
-                  presenter.addTodoWithRefresh("Button Todo created"),
-              child: Icon(Icons.plus_one),
-            )
-          : null,
-    );
-  },
-  presenterBuilder: (context) => MyPresenter(),
-  interfaceBuilder: (context) => ViewInterface(context),
-);
+                body: ListView.separated(
+                    itemBuilder: (context, index) => InkWell(
+                          onTap: () => presenter.onClickItem(index),
+                          child: ListTile(
+                            title: Text(model.todoList![index].title),
+                            subtitle: Text(model.todoList![index].subtitle),
+                          ),
+                        ),
+                    separatorBuilder: (context, index) => Divider(height: 1),
+                    itemCount: model.todoList?.length ?? 0),
+                floatingActionButton: ctx.device < Device.large()
+                    ? FloatingActionButton(
+                        backgroundColor: Colors.redAccent,
+                        onPressed: () =>
+                            presenter.addTodoWithRefresh("Button Todo created"),
+                        child: Icon(Icons.plus_one),
+                      )
+                    : null,
+              );
+            },
+            presenterBuilder: (context) => MyPresenter(),
+            interfaceBuilder: (context) => ViewInterface(context),
+          );
+}
 
 Route<dynamic> route(RouteSettings settings) {
   print("...[call route] ${settings.name}");
   switch (settings.name) {
     case '/second':
-      return MaterialPageRoute(builder: secondPageBuilder.build);
+      return MaterialPageRoute(builder: (_) => SecondPage());
     default:
-      return MaterialPageRoute(builder: myPageBuilder.build);
+      return MaterialPageRoute(builder: (_) => FirstPage());
   }
 }
 

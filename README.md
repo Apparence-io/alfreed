@@ -21,17 +21,24 @@ import 'package:alfreed/alfreed.dart';
 
 ### Create a page builder
 ```dart
-var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter"),
-  builder: (ctx, presenter, model) {
-    return Scaffold(
-      appBar: AppBar(title: Text(model.title ?? "")),
-      // ... you page widgets are here
+class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  SecondPage({Object? args}) : super(args: args);
+
+  @override
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> get alfreedPageBuilder {
+    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+      key: ValueKey("presenter"),
+      builder: (ctx, presenter, model) {
+        return Scaffold(
+          appBar: AppBar(title: Text(model.title ?? "")),
+          // ... you page widgets are here
+        );
+      },
+      presenterBuilder: (context) => MyPresenter(),
+      interfaceBuilder: (context) => ViewInterface(context),
     );
-  },
-  presenterBuilder: (context) => MyPresenter(),
-  interfaceBuilder: (context) => ViewInterface(context),
-);
+  }
+}
 ```
 
 Every build or defered to let our navigation beeing responsible for building them. (see routing section).
@@ -40,6 +47,8 @@ Every build or defered to let our navigation beeing responsible for building the
 * **presenterBuilder**: build your presenter (business logic class)
 * **interfaceBuilder**: build your view interface (business logic call this class to interact with our application without knowing flutter). Goal is to hide flutter from our business logic. (***Example: showSnackBar(String message) Without any context in parameters***)
 * **key**(***optionnal***): used to get a reference to the presenter
+
+> Note: we extends [AlfreedPage] to handle hot reload. Without hot reload we could remove this layer. 
 
 ### Create a presenter 
 Create a presenter extending ```Presenter``` class. 
@@ -71,16 +80,16 @@ class ViewInterface extends AlfreedView {
 ```
 
 ## Routing
-You can wrap our builder directly in your app router. 
+You can push our page widget in your app router. 
 <br/>Like this:
 
 ```dart
 Route<dynamic> route(RouteSettings settings) {
   switch(settings.name) {
       case "/":
-        return MaterialPageRoute(builder: myPageBuilder.build);
+        return MaterialPageRoute(builder: FirstPage());
       default:  
-        return MaterialPageRoute(builder: errorPage.build);
+        return MaterialPageRoute(builder: SecondPage());
   }
 }
 ```
@@ -98,7 +107,7 @@ Device type can be :
 
 Example of using: 
 ```dart
-var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
   key: ValueKey("presenter"),
   builder: (ctx, presenter, model) {
     return Scaffold(
@@ -132,7 +141,7 @@ Basically animations are accessed through a map where you name them. This can he
 
 #### example:
 ```dart
-var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
+ AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
   singleAnimControllerBuilder: (ticker) {
     var controller =
         AnimationController(vsync: ticker, duration: Duration(seconds: 1));
@@ -166,12 +175,15 @@ You can pass arguments from routing directly to your presenter like this
 Route<dynamic> route(RouteSettings settings) {
   switch (settings.name) {
     case '/second':
-      secondPage.args = settings.arguments;
-      return MaterialPageRoute(builder: secondPage.build);
+      return MaterialPageRoute(builder: SecondPage(args: settings.arguments));
     default:
       return MaterialPageRoute(builder: myPageBuilder.build);
   }
 }
+```
+now you can access args directly inside your presenter using:
+```dart
+this.args 
 ```
 
 <hr/>
@@ -193,3 +205,42 @@ var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
 Prefer using a real presenter but in some case this helps. 
 
 > ***Doc incoming***
+
+## VsCode snippets 
+Preferences > User snippets 
+```json
+"Alfreed template": {
+		"prefix": "alf",
+		"description": "create an Alfreed templated page",
+		"body": [
+			"import 'package:flutter/material.dart';",
+			"import 'package:alfreed/alfreed.dart';",
+			"",
+			"class ${1:name}ViewModel {}",
+			"",
+			"class ${1:name}ViewInterface extends AlfreedView {",
+			"  ${1:name}ViewInterface(BuildContext context) : super(context: context);",
+			"}",
+			"",
+			"class ${1:name}Page extends AlfreedPage<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface>  {",
+			"",
+			"  ${1:name}Page({Object? args}) : super(args: args);",
+			"",
+			"  @override",
+			"  AlfreedPageBuilder<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface> get alfreedPageBuilder {",
+			"    return AlfreedPageBuilder<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface>(",
+			"      key: ValueKey('presenter'),",
+			"      presenterBuilder: (context) => ${1:name}Presenter(),",
+			"      interfaceBuilder: (context) => ${1:name}ViewInterface(context),",
+			"      builder: (context, presenter, model) => null, //TODO",
+			"    );",
+			"  }",
+			"}",
+			"",
+			"class ${1:name}Presenter extends Presenter<${1:name}ViewModel, ${1:name}ViewInterface> {",
+			"",
+			"  ${1:name}Presenter() : super(state: ${1:name}ViewModel());",
+			"}"
+		]
+	}
+```
