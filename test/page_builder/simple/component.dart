@@ -49,11 +49,17 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
   }
 
   void addTodo(String s) {
-    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this
+        .state!
+        .todoList!
+        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this.state!.todoList!.add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    this
+        .state!
+        .todoList!
+        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
     refreshView();
   }
 
@@ -70,10 +76,12 @@ class PageArguments {
 
 class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   final bool rebuildAfterDisposed;
-  FirstPage({Object? args, this.rebuildAfterDisposed = true}) : super(args: args);
+  FirstPage({Object? args, this.rebuildAfterDisposed = true})
+      : super(args: args);
 
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> get alfreedPageBuilder {
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
+      get alfreedPageBuilder {
     return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
       key: ValueKey("presenter"),
       builder: (ctx, presenter, model) {
@@ -85,15 +93,19 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
               IconButton(
                 icon: const Icon(Icons.add_alert),
                 tooltip: 'Show Snackbar',
-                onPressed: () => Navigator.of(ctx.buildContext).pushReplacementNamed('/second', arguments: PageArguments("test")),
+                onPressed: () => Navigator.of(ctx.buildContext)
+                    .pushReplacementNamed('/second',
+                        arguments: PageArguments("test")),
               ),
               IconButton(
                 icon: const Icon(Icons.add),
-                onPressed: () => Navigator.of(ctx.buildContext).pushNamed('/page3'),
+                onPressed: () =>
+                    Navigator.of(ctx.buildContext).pushNamed('/page3'),
               ),
               IconButton(
                 icon: const Icon(Icons.access_time),
-                onPressed: () => Navigator.of(ctx.buildContext).pushNamed('/pageWithNoRebuildAfterDisposed'),
+                onPressed: () => Navigator.of(ctx.buildContext)
+                    .pushNamed('/pageWithNoRebuildAfterDisposed'),
               ),
             ],
           ),
@@ -109,7 +121,8 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
               itemCount: model.todoList?.length ?? 0),
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.redAccent,
-            onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
+            onPressed: () =>
+                presenter.addTodoWithRefresh("Button Todo created"),
             child: Icon(Icons.plus_one),
           ),
         );
@@ -127,7 +140,8 @@ class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   }) : super(args: args);
 
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> get alfreedPageBuilder {
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
+      get alfreedPageBuilder {
     return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
       key: ValueKey("presenter"),
       builder: (ctx, presenter, model) {
@@ -145,7 +159,8 @@ class ThirdPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   ThirdPage();
 
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> get alfreedPageBuilder {
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
+      get alfreedPageBuilder {
     return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
       key: ValueKey("presenter3"),
       builder: (ctx, presenter, model) {
@@ -164,7 +179,8 @@ Route<dynamic> route(RouteSettings settings) {
   print("push ${settings.name}");
   switch (settings.name) {
     case '/second':
-      return MaterialPageRoute(builder: (_) => SecondPage(args: settings.arguments));
+      return MaterialPageRoute(
+          builder: (_) => SecondPage(args: settings.arguments));
     case '/page3':
       return MaterialPageRoute(builder: (_) => ThirdPage());
     case '/pageWithNoRebuildAfterDisposed':
@@ -187,7 +203,8 @@ Route<dynamic> routeWithCache(RouteSettings settings) {
   print("push ${settings.name}");
   switch (settings.name) {
     case '/second':
-      return MaterialPageRoute(builder: (_) => SecondPage(args: settings.arguments));
+      return MaterialPageRoute(
+          builder: (_) => SecondPage(args: settings.arguments));
     case '/page3':
       return MaterialPageRoute(builder: (_) => ThirdPage());
     case '/pageWithNoRebuildAfterDisposed':

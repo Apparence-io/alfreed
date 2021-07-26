@@ -22,11 +22,14 @@ void main() {
             IconButton(
               icon: const Icon(Icons.add_alert),
               tooltip: 'Show Snackbar',
-              onPressed: () => Navigator.of(ctx.buildContext).pushReplacementNamed('/second', arguments: PageArguments("test")),
+              onPressed: () => Navigator.of(ctx.buildContext)
+                  .pushReplacementNamed('/second',
+                      arguments: PageArguments("test")),
             ),
             IconButton(
               icon: const Icon(Icons.add),
-              onPressed: () => Navigator.of(ctx.buildContext).pushNamed('/page3'),
+              onPressed: () =>
+                  Navigator.of(ctx.buildContext).pushNamed('/page3'),
             ),
           ],
         ),
@@ -52,7 +55,8 @@ void main() {
   );
 
   _beforeEach(WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(onGenerateRoute: (RouteSettings settings) {
+    await tester
+        .pumpWidget(MaterialApp(onGenerateRoute: (RouteSettings settings) {
       switch (settings.name) {
         case '/second':
           secondPage.args = settings.arguments;
@@ -69,7 +73,8 @@ void main() {
     reset(presenterMock);
   });
 
-  testWidgets('on page started -> onInit is called, onViewCreated is called', (WidgetTester tester) async {
+  testWidgets('on page started -> onInit is called, onViewCreated is called',
+      (WidgetTester tester) async {
     var state = MyModel();
     when(presenterMock.hasInit).thenReturn(false);
     when(presenterMock.state).thenReturn(state);
@@ -80,7 +85,9 @@ void main() {
     verify(presenterMock.afterViewInit()).called(1);
   });
 
-  testWidgets('push page3, pop page, push back page3 -> onInit is not called again', (WidgetTester tester) async {
+  testWidgets(
+      'push page3, pop page, push back page3 -> onInit is not called again',
+      (WidgetTester tester) async {
     var state = MyModel();
     when(presenterMock.state).thenReturn(state);
     when(presenterMock.hasInit).thenReturn(false);

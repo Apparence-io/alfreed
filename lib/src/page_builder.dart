@@ -6,19 +6,24 @@ import 'content_builder.dart';
 import 'models/anim.dart';
 
 /// builds a presenter
-typedef PresenterBuilder<P extends Presenter> = P Function(BuildContext context);
+typedef PresenterBuilder<P extends Presenter> = P Function(
+    BuildContext context);
 
 /// builds the interface that the presenter can call to call the view
-typedef AlfreedViewBuilder<I extends AlfreedView> = I Function(BuildContext context);
+typedef AlfreedViewBuilder<I extends AlfreedView> = I Function(
+    BuildContext context);
 
 /// functions to handle animation state without refresh page
-typedef MvvmAnimationListener<P extends Presenter, M> = void Function(AlfreedContext context, P presenter, M model);
+typedef MvvmAnimationListener<P extends Presenter, M> = void Function(
+    AlfreedContext context, P presenter, M model);
 
 /// functions to create animations using a string key to find your animation back
-typedef AlfreedAnimationsBuilder = Map<String, AlfreedAnimation> Function(TickerProvider tickerProvider);
+typedef AlfreedAnimationsBuilder = Map<String, AlfreedAnimation> Function(
+    TickerProvider tickerProvider);
 
 /// builds a single [AlfreedAnimation]
-typedef AlfreedAnimationBuilder = Map<String, AlfreedAnimation> Function(TickerProvider tickerProvider);
+typedef AlfreedAnimationBuilder = Map<String, AlfreedAnimation> Function(
+    TickerProvider tickerProvider);
 
 class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
   P? _presenter;
@@ -99,12 +104,20 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
 
   Widget build(BuildContext context) {
     assert(
-        ((singleAnimControllerBuilder != null || multipleAnimControllerBuilder != null) && animListener != null) ||
-            (singleAnimControllerBuilder == null && multipleAnimControllerBuilder == null),
+        ((singleAnimControllerBuilder != null ||
+                    multipleAnimControllerBuilder != null) &&
+                animListener != null) ||
+            (singleAnimControllerBuilder == null &&
+                multipleAnimControllerBuilder == null),
         'An Animated page was requested, but no listener was given.');
-    assert(!(singleAnimControllerBuilder != null && multipleAnimControllerBuilder != null),
+    assert(
+        !(singleAnimControllerBuilder != null &&
+            multipleAnimControllerBuilder != null),
         'Cannot have both a single and a multiple animation controller builder.');
-    if (_presenter == null || forceRebuild || (_presenter?.presenterState == PresenterState.DISPOSED && rebuildIfDisposed)) {
+    if (_presenter == null ||
+        forceRebuild ||
+        (_presenter?.presenterState == PresenterState.DISPOSED &&
+            rebuildIfDisposed)) {
       _presenter = presenterBuilder(context);
       _presenter!.view = interfaceBuilder(context);
     }
