@@ -31,6 +31,12 @@
             "type": "dart",
             "program": "example/lib/animated/main.dart",
             "args": ["-d","chrome"]
-        }
+        },
+        {
+            "name": "with bart example",
+            "request": "launch",
+            "type": "dart",
+            "program": "example/lib/bart/main.dart",
+        },
     ]
 }

@@ -1,3 +1,6 @@
+## 0.2.0
+- adding rebuildIfDisposed on AlfreedPageBuilder. Persist state even if page is rebuilt.  
+
 ## 0.1.0
 - fixing hot reload. Add a AlfreedPage widget to embedd your builder. This is optionnal and only to handle hot reload correctly. 
 

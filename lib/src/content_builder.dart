@@ -8,8 +8,7 @@ import 'presenter.dart';
 import 'single_anim_content_state.dart';
 
 /// builds a child for a [ContentBuilder]
-typedef ContentBuilder<P extends Presenter, M> = Widget Function(
-    AlfreedContext context, P presenter, M model);
+typedef ContentBuilder<P extends Presenter, M> = Widget Function(AlfreedContext context, P presenter, M model);
 
 /// Base class for views to implement
 abstract class ContentView {
@@ -50,10 +49,7 @@ class MVVMContent<P extends Presenter, M> extends StatefulWidget {
   }
 }
 
-class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
-    implements ContentView {
-  bool hasInit = false;
-
+class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent> implements ContentView {
   _MVVMContentState();
 
   @override
@@ -61,12 +57,13 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
     super.didChangeDependencies();
     presenter.viewRef = this;
     if (!hasInit) {
-      hasInit = true;
       presenter.onInit();
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        presenter.afterViewInit();
-      });
     }
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (mounted) {
+        presenter.afterViewInit();
+      }
+    });
   }
 
   @override
@@ -82,8 +79,7 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
   }
 
   @override
-  Widget build(BuildContext context) => SizeChangedLayoutNotifier(
-      child: builder(mvvmContext, presenter, presenter.state));
+  Widget build(BuildContext context) => SizeChangedLayoutNotifier(child: builder(mvvmContext, presenter, presenter.state));
 
   @override
   void forceRefreshView() {
@@ -94,10 +90,13 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
 
   AlfreedContext get mvvmContext => AlfreedContext(context);
 
+  bool get hasInit => presenter.hasInit!;
+
+  set hasInit(bool value) => presenter.hasInit = value;
+
   P get presenter => PresenterInherited.of<P, M>(context).presenter;
 
-  ContentBuilder<P, M> get builder =>
-      PresenterInherited.of<P, M>(context).builder;
+  ContentBuilder<P, M> get builder => PresenterInherited.of<P, M>(context).builder;
 
   @override
   Future<void> refreshAnimation() => throw UnimplementedError();

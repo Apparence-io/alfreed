@@ -43,6 +43,9 @@ abstract class Presenter<T, I extends AlfreedView> {
   /// the view where we build our page
   ContentView? _view;
 
+  // used to check wheter we have to call init when content is built
+  bool? hasInit;
+
   /// Current lifecyle state
   PresenterState? _presenterState;
 
@@ -56,11 +59,12 @@ abstract class Presenter<T, I extends AlfreedView> {
   Object? args;
 
   /// Container controlling the current state of the view
-  Presenter({required this.state});
+  Presenter({required this.state}) : hasInit = false;
 
   /// called when view init
   @mustCallSuper
   void onInit() {
+    hasInit = true;
     _presenterState = PresenterState.CREATED;
   }
 

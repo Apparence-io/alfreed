@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
 
-abstract class AlfreedPage<P extends Presenter, M, I extends AlfreedView>
-    extends StatelessWidget {
+abstract class AlfreedPage<P extends Presenter, M, I extends AlfreedView> extends StatelessWidget {
   late final AlfreedPageBuilder<P, M, I> builder;
   final Object? args;
 

@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/felangel/bloc/actions"><img src="https://github.com/felangel/bloc/workflows/build/badge.svg" alt="build"></a>
+<a href="https://github.com/Apparence-io/alfreed/actions"><img src="https://github.com/Apparence-io/alfreed/workflows/build/badge.svg" alt="build"></a>
 <a href="https://codecov.io/gh/Apparence-io/alfreed"><img src="https://codecov.io/gh/Apparence-io/alfreed/branch/master/graph/badge.svg?token=WYSESJJY0P"/></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
 </p>
@@ -90,6 +90,28 @@ Route<dynamic> route(RouteSettings settings) {
         return MaterialPageRoute(builder: FirstPage());
       default:  
         return MaterialPageRoute(builder: SecondPage());
+  }
+}
+```
+
+
+## Persist page state after disposed page
+> **Use case**: you want to navigate to a tab and keep your page state across rebuild. You can use this
+
+Use ```rebuildIfDisposed``` parameter.
+
+*Example:*
+```dart
+class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  @override
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> get alfreedPageBuilder {
+    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+      key: ValueKey("presenter"),
+      builder: (ctx, presenter, model) => Scaffold(appBar: AppBar(title: Text(model.title ?? ""))),
+      presenterBuilder: (context) => MyPresenter(),
+      interfaceBuilder: (context) => ViewInterface(context),
+      rebuildIfDisposed: false, /// this force the builder to not recreate our presenter. Only content will be rebuilt after recreating page. 
+    );
   }
 }
 ```
