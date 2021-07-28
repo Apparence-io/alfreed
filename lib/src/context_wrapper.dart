@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'models/anim.dart';
@@ -74,9 +73,11 @@ class AlfreedContext {
 
   Orientation get orientation => MediaQuery.of(buildContext).orientation;
 
-  bool isDesktop = Platform.isWindows || Platform.isLinux || Platform.isMacOS;
+  bool isDesktop = defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.linux || defaultTargetPlatform == TargetPlatform.macOS;
 
-  bool isMobile = Platform.isAndroid || Platform.isIOS;
+  bool isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
+  
+  bool isWeb = kIsWeb;
 
   NavigatorState get navigator => Navigator.of(buildContext);
 }
