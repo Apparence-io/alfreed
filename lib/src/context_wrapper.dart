@@ -73,10 +73,13 @@ class AlfreedContext {
 
   Orientation get orientation => MediaQuery.of(buildContext).orientation;
 
-  bool isDesktop = defaultTargetPlatform == TargetPlatform.windows || defaultTargetPlatform == TargetPlatform.linux || defaultTargetPlatform == TargetPlatform.macOS;
+  bool isDesktop = defaultTargetPlatform == TargetPlatform.windows ||
+      defaultTargetPlatform == TargetPlatform.linux ||
+      defaultTargetPlatform == TargetPlatform.macOS;
 
-  bool isMobile = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
-  
+  bool isMobile = defaultTargetPlatform == TargetPlatform.android ||
+      defaultTargetPlatform == TargetPlatform.iOS;
+
   bool isWeb = kIsWeb;
 
   NavigatorState get navigator => Navigator.of(buildContext);
