@@ -1,3 +1,6 @@
+## 0.2.1
+- web support - removed dart:io from imports
+
 ## 0.2.0
 - adding rebuildIfDisposed on AlfreedPageBuilder. Persist state even if page is rebuilt.  
 
