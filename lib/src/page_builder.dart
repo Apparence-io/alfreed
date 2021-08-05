@@ -119,8 +119,8 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
         (_presenter?.presenterState == PresenterState.DISPOSED &&
             rebuildIfDisposed)) {
       _presenter = presenterBuilder(context);
-      _presenter!.view = interfaceBuilder(context);
     }
+    _presenter!.view = interfaceBuilder(context);
     _presenter!.args = args;
     // Widget content;
     Widget content = MVVMContent<P, M>(
