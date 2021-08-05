@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/Apparence-io/alfreed/actions"><img src="https://github.com/Apparence-io/alfreed/workflows/build/badge.svg" alt="build"></a>
+<a href="https://github.com/Apparence-io/alfreed/actions"><img src="https://img.shields.io/github/workflow/status/Apparence-io/bart/main" alt="build"></a>
 <a href="https://codecov.io/gh/Apparence-io/alfreed"><img src="https://codecov.io/gh/Apparence-io/alfreed/branch/master/graph/badge.svg?token=WYSESJJY0P"/></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-purple.svg" alt="License: MIT"></a>
 </p>

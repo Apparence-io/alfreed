@@ -1,3 +1,6 @@
+## 0.2.2
+- now reload viewinterface when pagebuilder is called again
+
 ## 0.2.1
 - web support - removed dart:io from imports
 
