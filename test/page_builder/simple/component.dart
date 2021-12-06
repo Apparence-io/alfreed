@@ -76,14 +76,16 @@ class PageArguments {
 
 class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   final bool rebuildAfterDisposed;
-  FirstPage({Object? args, this.rebuildAfterDisposed = true})
+  final String? presenterName;
+  FirstPage(
+      {Object? args, this.rebuildAfterDisposed = true, this.presenterName})
       : super(args: args);
 
   @override
   AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
       get alfreedPageBuilder {
     return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-      key: ValueKey("presenter"),
+      key: ValueKey(presenterName ?? "presenter"),
       builder: (ctx, presenter, model) {
         return Scaffold(
           // key: _scaffoldKey,
@@ -222,5 +224,36 @@ class CachedBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(onGenerateRoute: routeWithCache);
+  }
+}
+
+Route<dynamic> routeWithCacheForceRebuild(RouteSettings settings) {
+  print("push ${settings.name}");
+  switch (settings.name) {
+    case '/second':
+      return MaterialPageRoute(
+          builder: (_) => SecondPage(args: settings.arguments));
+    case '/page3':
+      return MaterialPageRoute(builder: (_) => ThirdPage());
+    case '/pageWithNoRebuildAfterDisposed':
+      return MaterialPageRoute(
+          builder: (_) => FirstPage(
+                rebuildAfterDisposed: true,
+                presenterName: "cachedPresenter",
+              ));
+    default:
+      return MaterialPageRoute(
+        builder: (_) => FirstPage(
+          rebuildAfterDisposed: false,
+          presenterName: "presenter",
+        ),
+      );
+  }
+}
+
+class CachedWithRebuildOnDisposeBuilder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(onGenerateRoute: routeWithCacheForceRebuild);
   }
 }

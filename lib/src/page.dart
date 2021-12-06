@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../alfreed.dart';
 
 abstract class AlfreedPage<P extends Presenter, M, I extends AlfreedView>
-    extends StatelessWidget {
-  late final AlfreedPageBuilder<P, M, I> builder;
+    extends StatefulWidget {
   final Object? args;
+  late final AlfreedPageBuilder<P, M, I> builder;
 
   AlfreedPage({
     Key? key,
@@ -14,8 +14,18 @@ abstract class AlfreedPage<P extends Presenter, M, I extends AlfreedView>
     builder = alfreedPageBuilder..args = args;
   }
 
-  @override
-  Widget build(BuildContext context) => builder.build(context);
-
   AlfreedPageBuilder<P, M, I> get alfreedPageBuilder;
+
+  @override
+  _AlfreedFullPageState createState() => _AlfreedFullPageState(this.builder);
+}
+
+class _AlfreedFullPageState<P extends Presenter, M, I extends AlfreedView>
+    extends State<AlfreedPage> {
+  AlfreedPageBuilder<P, M, I> _builder;
+
+  _AlfreedFullPageState(this._builder);
+
+  @override
+  Widget build(BuildContext context) => _builder.build(context);
 }

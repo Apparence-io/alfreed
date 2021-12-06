@@ -70,8 +70,8 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
 
   @override
   void reassemble() {
+    presenter.onReassemble();
     super.reassemble();
-    hasInit = false;
   }
 
   @override

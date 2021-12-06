@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "hot reload example",
+            "request": "launch",
+            "type": "dart",
+            "program": "example/lib/embedded/main.dart"
+        },
+        {
             "name": "example",
             "request": "launch",
             "type": "dart",

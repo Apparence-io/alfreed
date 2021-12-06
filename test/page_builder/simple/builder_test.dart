@@ -5,7 +5,7 @@ import '../../utils.dart';
 import 'component.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  // TestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Builds page correctly using alfreed',
       (WidgetTester tester) async {
