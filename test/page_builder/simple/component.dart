@@ -224,3 +224,29 @@ class CachedBuilder extends StatelessWidget {
     return MaterialApp(onGenerateRoute: routeWithCache);
   }
 }
+
+Route<dynamic> routeWithCacheForceRebuild(RouteSettings settings) {
+  print("push ${settings.name}");
+  switch (settings.name) {
+    case '/second':
+      return MaterialPageRoute(
+          builder: (_) => SecondPage(args: settings.arguments));
+    case '/page3':
+      return MaterialPageRoute(builder: (_) => ThirdPage());
+    case '/pageWithNoRebuildAfterDisposed':
+      if (firstPageCache == null) {
+        print("build first page");
+        firstPageCache = FirstPage(rebuildAfterDisposed: true);
+      }
+      return MaterialPageRoute(builder: (_) => firstPageCache!);
+    default:
+      return MaterialPageRoute(builder: (_) => FirstPage());
+  }
+}
+
+class CachedWithRebuildOnDisposeBuilder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(onGenerateRoute: routeWithCacheForceRebuild);
+  }
+}
