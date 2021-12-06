@@ -76,14 +76,16 @@ class PageArguments {
 
 class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   final bool rebuildAfterDisposed;
-  FirstPage({Object? args, this.rebuildAfterDisposed = true})
+  final String? presenterName;
+  FirstPage(
+      {Object? args, this.rebuildAfterDisposed = true, this.presenterName})
       : super(args: args);
 
   @override
   AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
       get alfreedPageBuilder {
     return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-      key: ValueKey("presenter"),
+      key: ValueKey(presenterName ?? "presenter"),
       builder: (ctx, presenter, model) {
         return Scaffold(
           // key: _scaffoldKey,
@@ -234,13 +236,18 @@ Route<dynamic> routeWithCacheForceRebuild(RouteSettings settings) {
     case '/page3':
       return MaterialPageRoute(builder: (_) => ThirdPage());
     case '/pageWithNoRebuildAfterDisposed':
-      if (firstPageCache == null) {
-        print("build first page");
-        firstPageCache = FirstPage(rebuildAfterDisposed: true);
-      }
-      return MaterialPageRoute(builder: (_) => firstPageCache!);
+      return MaterialPageRoute(
+          builder: (_) => FirstPage(
+                rebuildAfterDisposed: true,
+                presenterName: "cachedPresenter",
+              ));
     default:
-      return MaterialPageRoute(builder: (_) => FirstPage());
+      return MaterialPageRoute(
+        builder: (_) => FirstPage(
+          rebuildAfterDisposed: false,
+          presenterName: "presenter",
+        ),
+      );
   }
 }
 

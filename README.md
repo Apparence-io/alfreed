@@ -210,6 +210,14 @@ this.args
 
 <hr/>
 
+## Developper hot reload
+Presenter has a ```rebuildOnHotReload``` that will trigger each time user hot reload and call onInit again. 
+By default rebuildOnHotReload is False, so state will be preserved. 
+
+### Handle behavior on hot reload
+Override ```onReassemble``` in your presenter.
+
+
 ## Test
 
 ### Get presenter ref
@@ -246,7 +254,7 @@ Preferences > User snippets
 			"",
 			"class ${1:name}Page extends AlfreedPage<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface>  {",
 			"",
-			"  ${1:name}Page({Object? args}) : super(args: args);",
+			"  ${1:name}Page({Object? args, Key? key}) : super(args: args, key: key);",
 			"",
 			"  @override",
 			"  AlfreedPageBuilder<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface> get alfreedPageBuilder {",

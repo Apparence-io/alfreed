@@ -17,13 +17,15 @@ abstract class AlfreedPage<P extends Presenter, M, I extends AlfreedView>
   AlfreedPageBuilder<P, M, I> get alfreedPageBuilder;
 
   @override
-  _AlfreedFullPageState createState() => _AlfreedFullPageState();
+  _AlfreedFullPageState createState() => _AlfreedFullPageState(this.builder);
 }
 
 class _AlfreedFullPageState<P extends Presenter, M, I extends AlfreedView>
     extends State<AlfreedPage> {
-  _AlfreedFullPageState();
+  AlfreedPageBuilder<P, M, I> _builder;
+
+  _AlfreedFullPageState(this._builder);
 
   @override
-  Widget build(BuildContext context) => widget.builder.build(context);
+  Widget build(BuildContext context) => _builder.build(context);
 }

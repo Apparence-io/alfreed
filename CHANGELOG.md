@@ -1,3 +1,7 @@
+## 0.2.3
+- hot reload prevent call onInit by default
+- add onReassemble callback on presenter
+
 ## 0.2.2
 - now reload viewinterface when pagebuilder is called again
 

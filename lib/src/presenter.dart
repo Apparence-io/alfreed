@@ -58,8 +58,14 @@ abstract class Presenter<T, I extends AlfreedView> {
   /// arguments from route
   Object? args;
 
+  /// recall init on hot reload
+  final bool rebuildOnHotReload;
+
   /// Container controlling the current state of the view
-  Presenter({required this.state}) : hasInit = false;
+  Presenter({
+    required this.state,
+    this.rebuildOnHotReload = false,
+  }) : hasInit = false;
 
   /// called when view init
   @mustCallSuper
@@ -78,6 +84,14 @@ abstract class Presenter<T, I extends AlfreedView> {
   @mustCallSuper
   void onDeactivate() {
     _presenterState = PresenterState.DISPOSED;
+  }
+
+  /// called only in dev mode. Reload state on hot reload
+  @mustCallSuper
+  void onReassemble() {
+    if (this.rebuildOnHotReload) {
+      this.onInit();
+    }
   }
 
   /// call this to refresh the view

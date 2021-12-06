@@ -119,7 +119,10 @@ Route<dynamic> route(RouteSettings settings) {
     case '/second':
       return MaterialPageRoute(builder: (_) => SecondPage());
     default:
-      return MaterialPageRoute(builder: (_) => FirstPage());
+      return MaterialPageRoute(builder: (_) {
+        print("build first page");
+        return FirstPage();
+      });
   }
 }
 
