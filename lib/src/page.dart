@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
+import 'content_builder.dart';
 
 abstract class AlfreedPage<P extends Presenter, M, I extends AlfreedView>
     extends StatefulWidget {
@@ -25,6 +26,13 @@ class _AlfreedFullPageState<P extends Presenter, M, I extends AlfreedView>
   AlfreedPageBuilder<P, M, I> _builder;
 
   _AlfreedFullPageState(this._builder);
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    _builder = widget.alfreedPageBuilder.copyWith(presenter: _builder.presenter)
+        as AlfreedPageBuilder<P, M, I>;
+  }
 
   @override
   Widget build(BuildContext context) => _builder.build(context);

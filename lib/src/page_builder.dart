@@ -49,7 +49,25 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
     this.multipleAnimControllerBuilder,
     this.forceRebuild = false,
     this.rebuildIfDisposed = false,
-  });
+    P? presenter,
+  }) : _presenter = presenter;
+
+  AlfreedPageBuilder<P, M, I> copyWith({
+    ContentBuilder<P, M>? builder,
+    P? presenter,
+  }) =>
+      AlfreedPageBuilder._(
+        key: key,
+        presenterBuilder: presenterBuilder,
+        builder: builder ?? this.builder,
+        interfaceBuilder: interfaceBuilder,
+        animListener: animListener,
+        singleAnimControllerBuilder: singleAnimControllerBuilder,
+        multipleAnimControllerBuilder: multipleAnimControllerBuilder,
+        forceRebuild: forceRebuild,
+        rebuildIfDisposed: rebuildIfDisposed,
+        presenter: presenter ?? this._presenter,
+      );
 
   factory AlfreedPageBuilder({
     Key? key,
@@ -136,6 +154,5 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
     );
   }
 
-  @visibleForTesting
   P get presenter => _presenter!;
 }

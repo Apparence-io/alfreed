@@ -60,7 +60,8 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
                         backgroundColor: Colors.redAccent,
                         onPressed: () =>
                             presenter.addTodoWithRefresh("Button Todo created"),
-                        child: Icon(Icons.plus_one),
+                        // child: Icon(Icons.plus_one),
+                        child: Icon(Icons.ac_unit_outlined),
                       )
                     : null,
               );
@@ -113,6 +114,22 @@ class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
           );
 }
 
+class StfulEmbedder extends StatefulWidget {
+  final Widget child;
+
+  const StfulEmbedder({Key? key, required this.child}) : super(key: key);
+
+  @override
+  _StfulEmbedderState createState() => _StfulEmbedderState();
+}
+
+class _StfulEmbedderState extends State<StfulEmbedder> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+}
+
 Route<dynamic> route(RouteSettings settings) {
   print("...[call route] ${settings.name}");
   switch (settings.name) {
@@ -121,7 +138,7 @@ Route<dynamic> route(RouteSettings settings) {
     default:
       return MaterialPageRoute(builder: (_) {
         print("build first page");
-        return FirstPage();
+        return StfulEmbedder(child: FirstPage());
       });
   }
 }
