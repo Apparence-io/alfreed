@@ -1,3 +1,6 @@
+## 0.2.4
+- hot reload page builder when page is embedded inside a state
+
 ## 0.2.3
 - hot reload prevent call onInit by default
 - add onReassemble callback on presenter
