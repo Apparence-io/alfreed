@@ -1,6 +1,5 @@
 import 'package:alfreed_example/bart/routes.dart';
 import 'package:bart/bart.dart';
-import 'package:bart/bart/bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 void main() {

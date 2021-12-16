@@ -1,9 +1,7 @@
-import 'package:alfreed/src/context_wrapper.dart';
 import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
 import 'content_builder.dart';
-import 'models/anim.dart';
 
 /// builds a presenter
 typedef PresenterBuilder<P extends Presenter> = P Function(

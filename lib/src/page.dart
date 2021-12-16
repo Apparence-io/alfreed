@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
-import 'content_builder.dart';
 
 abstract class AlfreedPage<P extends Presenter, M, I extends AlfreedView>
     extends StatefulWidget {

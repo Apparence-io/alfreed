@@ -1,5 +1,3 @@
-import 'package:alfreed/src/context_wrapper.dart';
-import 'package:alfreed/src/models/anim.dart';
 import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
