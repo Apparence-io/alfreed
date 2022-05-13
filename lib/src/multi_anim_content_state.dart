@@ -1,3 +1,4 @@
+import 'package:alfreed/src/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
@@ -21,7 +22,7 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
     if (!hasInit) {
       hasInit = true;
       presenter.onInit();
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
         presenter.afterViewInit();
       });
     }

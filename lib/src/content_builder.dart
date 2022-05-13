@@ -1,4 +1,5 @@
 import 'package:alfreed/src/models/anim.dart';
+import 'package:alfreed/src/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'context_wrapper.dart';
@@ -61,7 +62,7 @@ class _MVVMContentState<P extends Presenter, M> extends State<MVVMContent>
     if (!hasInit) {
       presenter.onInit();
     }
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
       if (mounted) {
         presenter.afterViewInit();
       }
