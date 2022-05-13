@@ -1,3 +1,6 @@
+## 0.3.0
+- Remove unnecessary null check
+
 ## 0.2.4
 - hot reload page builder when page is embedded inside a state
 
