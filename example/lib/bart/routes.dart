@@ -1,6 +1,7 @@
 import 'package:bart/bart.dart';
 import 'package:flutter/material.dart';
 
+import 'fake_list.dart';
 import 'fake_page.dart';
 
 List<BartMenuRoute> subRoutes() {
@@ -12,6 +13,7 @@ List<BartMenuRoute> subRoutes() {
       pageBuilder: (context, settings) => PageFake(
         Colors.black12,
         rebuildAfterDisposed: false,
+        pageStorageKey: PageStorageKey<String>("home"),
       ),
     ),
     BartMenuRoute.bottomBar(
@@ -21,6 +23,7 @@ List<BartMenuRoute> subRoutes() {
       pageBuilder: (context, settings) => PageFake(
         Colors.blueGrey.shade100,
         rebuildAfterDisposed: false,
+        pageStorageKey: PageStorageKey<String>("library"),
       ),
     ),
     BartMenuRoute.bottomBar(
@@ -30,6 +33,14 @@ List<BartMenuRoute> subRoutes() {
       pageBuilder: (context, settings) => PageFake(
         Colors.yellow.shade100,
         rebuildAfterDisposed: false,
+      ),
+    ),
+    BartMenuRoute.bottomBar(
+      label: "Colors",
+      icon: Icons.person,
+      path: '/colors',
+      pageBuilder: (context, settings) => ColorBoxPage(
+        key: PageStorageKey<String>('colors'),
       ),
     )
   ];

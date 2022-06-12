@@ -6,14 +6,16 @@ description: Demonstrates how to use the alfreed plugin.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   alfreed:
     path: ../
-  bart: ^0.1.1
+  # bart: ^0.1.1
+  bart: 
+    path: ../../bart
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

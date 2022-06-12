@@ -8,8 +8,11 @@ import 'view_interface.dart';
 class PageFake extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   final Color bgColor;
   final bool rebuildAfterDisposed;
+  final PageStorageKey? pageStorageKey;
 
-  PageFake(this.bgColor, {this.rebuildAfterDisposed = true});
+  PageFake(this.bgColor,
+      {this.rebuildAfterDisposed = true, this.pageStorageKey})
+      : super(key: pageStorageKey);
 
   @override
   AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
@@ -18,7 +21,10 @@ class PageFake extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
             key: ValueKey("presenter"),
             builder: (ctx, presenter, model) {
               return Scaffold(
-                appBar: AppBar(title: Text(model.title ?? "")),
+                appBar: AppBar(
+                  title: Text(model.title ?? ""),
+                  automaticallyImplyLeading: false,
+                ),
                 backgroundColor: bgColor,
                 body: ListView.separated(
                     itemBuilder: (context, index) => InkWell(

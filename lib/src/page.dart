@@ -35,5 +35,7 @@ class _AlfreedFullPageState<P extends Presenter, M, I extends AlfreedView>
   }
 
   @override
-  Widget build(BuildContext context) => _builder.build(context);
+  Widget build(BuildContext context) {
+    return _builder.build(context);
+  }
 }
