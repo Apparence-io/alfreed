@@ -23,95 +23,95 @@ class ViewInterface extends AlfreedView {
 
 class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
-      get alfreedPageBuilder =>
-          AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-            key: ValueKey("presenter"),
-            builder: (ctx, presenter, model) {
-              return Scaffold(
-                appBar: AppBar(
-                  title: Text(model.title ?? ""),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.add_alert),
-                      tooltip: 'Show Snackbar',
-                      onPressed: () =>
-                          Navigator.of(ctx.buildContext).pushNamed('/second'),
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
+    return AlfreedPageBuilder(
+      key: ValueKey("presenter"),
+      builder: (ctx, presenter, model) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(model.title ?? ""),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.add_alert),
+                tooltip: 'Show Snackbar',
+                onPressed: () =>
+                    Navigator.of(ctx.buildContext).pushNamed('/second'),
+              ),
+              IconButton(
+                icon: const Icon(Icons.ac_unit_rounded),
+                tooltip: 'pop Snackbar',
+                onPressed: () => print("test"),
+              ),
+            ],
+          ),
+          body: ListView.separated(
+              itemBuilder: (context, index) => InkWell(
+                    onTap: () => presenter.onClickItem(index),
+                    child: ListTile(
+                      title: Text(model.todoList![index].title),
+                      subtitle: Text(model.todoList![index].subtitle),
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.ac_unit_rounded),
-                      tooltip: 'pop Snackbar',
-                      onPressed: () => print("test"),
-                    ),
-                  ],
-                ),
-                body: ListView.separated(
-                    itemBuilder: (context, index) => InkWell(
-                          onTap: () => presenter.onClickItem(index),
-                          child: ListTile(
-                            title: Text(model.todoList![index].title),
-                            subtitle: Text(model.todoList![index].subtitle),
-                          ),
-                        ),
-                    separatorBuilder: (context, index) => Divider(height: 1),
-                    itemCount: model.todoList?.length ?? 0),
-                floatingActionButton: ctx.device < Device.large()
-                    ? FloatingActionButton(
-                        backgroundColor: Colors.redAccent,
-                        onPressed: () =>
-                            presenter.addTodoWithRefresh("Button Todo created"),
-                        // child: Icon(Icons.plus_one),
-                        child: Icon(Icons.ac_unit_outlined),
-                      )
-                    : null,
-              );
-            },
-            presenterBuilder: (context) => MyPresenter(),
-            interfaceBuilder: (context) => ViewInterface(context),
-          );
+                  ),
+              separatorBuilder: (context, index) => Divider(height: 1),
+              itemCount: model.todoList?.length ?? 0),
+          floatingActionButton: ctx.device < Device.large()
+              ? FloatingActionButton(
+                  backgroundColor: Colors.redAccent,
+                  onPressed: () =>
+                      presenter.addTodoWithRefresh("Button Todo created"),
+                  // child: Icon(Icons.plus_one),
+                  child: Icon(Icons.ac_unit_outlined),
+                )
+              : null,
+        );
+      },
+      presenterBuilder: (context) => MyPresenter(),
+      interfaceBuilder: (context) => ViewInterface(context),
+    );
+  }
 }
 
 class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
-      get alfreedPageBuilder =>
-          AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-            key: ValueKey("presenter"),
-            builder: (ctx, presenter, model) {
-              return Scaffold(
-                appBar: AppBar(
-                  title: Text(model.title ?? ""),
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.power_input),
-                      tooltip: 'pop Snackbar',
-                      onPressed: presenter.terminate,
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
+    return AlfreedPageBuilder(
+      key: ValueKey("presenter"),
+      builder: (ctx, presenter, model) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(model.title ?? ""),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.power_input),
+                tooltip: 'pop Snackbar',
+                onPressed: presenter.terminate,
+              ),
+            ],
+          ),
+          body: ListView.separated(
+              itemBuilder: (context, index) => InkWell(
+                    onTap: () => presenter.onClickItem(index),
+                    child: ListTile(
+                      title: Text(model.todoList![index].title),
+                      subtitle: Text(model.todoList![index].subtitle),
                     ),
-                  ],
-                ),
-                body: ListView.separated(
-                    itemBuilder: (context, index) => InkWell(
-                          onTap: () => presenter.onClickItem(index),
-                          child: ListTile(
-                            title: Text(model.todoList![index].title),
-                            subtitle: Text(model.todoList![index].subtitle),
-                          ),
-                        ),
-                    separatorBuilder: (context, index) => Divider(height: 1),
-                    itemCount: model.todoList?.length ?? 0),
-                floatingActionButton: ctx.device < Device.large()
-                    ? FloatingActionButton(
-                        backgroundColor: Colors.redAccent,
-                        onPressed: () =>
-                            presenter.addTodoWithRefresh("Button Todo created"),
-                        child: Icon(Icons.plus_one),
-                      )
-                    : null,
-              );
-            },
-            presenterBuilder: (context) => MyPresenter(),
-            interfaceBuilder: (context) => ViewInterface(context),
-          );
+                  ),
+              separatorBuilder: (context, index) => Divider(height: 1),
+              itemCount: model.todoList?.length ?? 0),
+          floatingActionButton: ctx.device < Device.large()
+              ? FloatingActionButton(
+                  backgroundColor: Colors.redAccent,
+                  onPressed: () =>
+                      presenter.addTodoWithRefresh("Button Todo created"),
+                  child: Icon(Icons.plus_one),
+                )
+              : null,
+        );
+      },
+      presenterBuilder: (context) => MyPresenter(),
+      interfaceBuilder: (context) => ViewInterface(context),
+    );
+  }
 }
 
 class StfulEmbedder extends StatefulWidget {

@@ -11,31 +11,34 @@ abstract class AlfreedPage<P extends Presenter, M, I extends AlfreedView>
     Key? key,
     this.args,
   }) : super(key: key) {
-    builder = alfreedPageBuilder..args = args;
+    builder = build();
   }
 
-  AlfreedPageBuilder<P, M, I> get alfreedPageBuilder;
+  AlfreedPageBuilder<P, M, I> build();
 
   @override
-  _AlfreedFullPageState createState() => _AlfreedFullPageState(this.builder);
+  _AlfreedFullPageState createState() => _AlfreedFullPageState();
 }
 
 class _AlfreedFullPageState<P extends Presenter, M, I extends AlfreedView>
     extends State<AlfreedPage> {
-  AlfreedPageBuilder<P, M, I> _builder;
+  AlfreedPageBuilder<P, M, I>? _builder;
 
-  _AlfreedFullPageState(this._builder);
+  _AlfreedFullPageState();
 
   @override
   void reassemble() {
     super.reassemble();
-    _builder = widget.alfreedPageBuilder.copyWith(
-      presenter: _builder.presenter,
+    _builder = widget.builder.copyWith(
+      presenter: _builder?.presenter,
     ) as AlfreedPageBuilder<P, M, I>;
   }
 
   @override
   Widget build(BuildContext context) {
-    return _builder.build(context);
+    if (_builder != null) {
+      return _builder!.build(context, args: widget.args);
+    }
+    return widget.builder.build(context);
   }
 }

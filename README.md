@@ -231,6 +231,12 @@ var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
 * The application must be started using a pumpWidget
 * the page is correctly build
 
+### Get data from child widget
+You can directly get your viewmodel from an Alfreedpage child like using this : 
+```dart
+final myModel = PresenterInherited.dataOf<MyPresenter, MyModel>(context);
+```
+
 ### Mock presenter
 Prefer using a real presenter but in some case this helps. 
 
@@ -257,8 +263,8 @@ Preferences > User snippets
 			"  ${1:name}Page({Object? args, Key? key}) : super(args: args, key: key);",
 			"",
 			"  @override",
-			"  AlfreedPageBuilder<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface> get alfreedPageBuilder {",
-			"    return AlfreedPageBuilder<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface>(",
+			"  AlfreedPageBuilder<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface build() {",
+			"    return AlfreedPageBuilder(",
 			"      key: ValueKey('presenter'),",
 			"      presenterBuilder: (context) => ${1:name}Presenter(),",
 			"      interfaceBuilder: (context) => ${1:name}ViewInterface(context),",

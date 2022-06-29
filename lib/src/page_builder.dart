@@ -118,7 +118,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
           rebuildIfDisposed: rebuildIfDisposed,
           multipleAnimControllerBuilder: multipleAnimControllerBuilder);
 
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, {Object? args}) {
     assert(
         ((singleAnimControllerBuilder != null ||
                     multipleAnimControllerBuilder != null) &&
@@ -137,7 +137,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
       _presenter = presenterBuilder(context);
     }
     _presenter!.view = interfaceBuilder(context);
-    _presenter!.args = args;
+    _presenter!.args = args ?? this.args;
     // Widget content;
     Widget content = MVVMContent<P, M>(
       singleAnimController: singleAnimControllerBuilder,

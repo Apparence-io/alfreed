@@ -25,6 +25,31 @@ class PresenterInherited<T extends Presenter, M> extends InheritedWidget {
   ) =>
       context.dependOnInheritedWidgetOfExactType<PresenterInherited<T, M>>()!;
 
+  /// Find the closest PresenterInherited above the current widget
+  static PresenterInherited<T, M>? maybeOf<T extends Presenter, M>(
+    BuildContext context,
+  ) =>
+      context.dependOnInheritedWidgetOfExactType<PresenterInherited<T, M>>();
+
+  /// Find the closest PresenterInherited data with type M above the current widget
+  /// and listen to data changes
+  static M dataOf<T extends Presenter, M>(
+    BuildContext context,
+  ) =>
+      context
+          .dependOnInheritedWidgetOfExactType<PresenterInherited<T, M>>()
+          ?.presenter
+          .state;
+
+  /// Find the closest PresenterInherited data with type M above the current widget
+  /// and listen to data changes
+  static T presenterOf<T extends Presenter, M>(
+    BuildContext context,
+  ) =>
+      context
+          .dependOnInheritedWidgetOfExactType<PresenterInherited<T, M>>()!
+          .presenter;
+
   @override
   bool updateShouldNotify(PresenterInherited oldWidget) => true;
 }
@@ -53,7 +78,7 @@ abstract class Presenter<T, I extends AlfreedView> {
   late I view;
 
   /// Model containing the current state of the view
-  T? state;
+  T state;
 
   /// arguments from route
   Object? args;
