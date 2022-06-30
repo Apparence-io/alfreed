@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:alfreed/alfreed.dart';
 
-import 'embedded.dart';
 import 'model.dart';
 import 'presenter.dart';
 
@@ -53,7 +52,12 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
                     child: ListTile(
                       title: Text(model.todoList![index].title),
                       subtitle: Text(model.todoList![index].subtitle),
-                      leading: EmbeddedPage(),
+                      trailing: StreamBuilder<int>(
+                        builder: (context, snapshot) {
+                          return Text('${snapshot.data}');
+                        },
+                        stream: model.todoList![index].counter$,
+                      ),
                     ),
                   ),
               separatorBuilder: (context, index) => const Divider(height: 1),

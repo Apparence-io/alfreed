@@ -51,10 +51,10 @@
             "program": "example/lib/bart/main.dart",
         },
         {
-            "name": "Embedded alfreed example",
+            "name": "Reactive alfreed example",
             "request": "launch",
             "type": "dart",
-            "program": "example/lib/alfreed_in_alfreed/main.dart",
+            "program": "example/lib/reactive/main.dart",
         },
     ]
 }

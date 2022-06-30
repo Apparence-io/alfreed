@@ -1,6 +1,8 @@
 ## 0.4.0
 - AlfreedPage get alfreedpageBuilder is now build()
 - get viewmodel from any alfreedPage child
+- fix lint errors
+- 
 
 ## 0.3.0
 - Remove unnecessary null check

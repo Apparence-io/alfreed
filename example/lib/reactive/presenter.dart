@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:alfreed/alfreed.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
@@ -17,6 +19,15 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
     }
     refreshView();
     super.onInit();
+    startCounter();
+  }
+
+  void startCounter() {
+    Future.delayed(const Duration(seconds: 1), () async {
+      var rdmIndex = Random().nextInt(state.todoList!.length - 1);
+      await state.todoList![rdmIndex].increment();
+      startCounter();
+    });
   }
 
   void addTodo(String s) {
@@ -34,5 +45,13 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
 
   void terminate() {
     view.pop();
+  }
+
+  @override
+  void onDeactivate() {
+    for (var todo in state.todoList!) {
+      todo.counterSubject.close();
+    }
+    super.onDeactivate();
   }
 }
