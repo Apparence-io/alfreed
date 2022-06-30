@@ -24,13 +24,13 @@ class Device {
 
   Device._(this.size, this.type);
 
-  factory Device.phone() => Device.fromSize(Size(450, 300));
+  factory Device.phone() => Device.fromSize(const Size(450, 300));
 
-  factory Device.tablet() => Device.fromSize(Size(700, 300));
+  factory Device.tablet() => Device.fromSize(const Size(700, 300));
 
-  factory Device.large() => Device.fromSize(Size(1000, 300));
+  factory Device.large() => Device.fromSize(const Size(1000, 300));
 
-  factory Device.xlarge() => Device.fromSize(Size(1920, 300));
+  factory Device.xlarge() => Device.fromSize(const Size(1920, 300));
 
   // inspired from twitter bootstrap
   factory Device.fromSize(Size size) {
@@ -47,17 +47,17 @@ class Device {
   }
 
   bool operator <(covariant Device other) {
-    if (this.type == other.type) {
+    if (type == other.type) {
       return false;
     }
-    return sizes[this.type]!.min < sizes[other.type]!.min;
+    return sizes[type]!.min < sizes[other.type]!.min;
   }
 
   bool operator >(covariant Device other) {
-    if (this.type == other.type) {
+    if (type == other.type) {
       return false;
     }
-    return sizes[this.type]!.min > sizes[other.type]!.min;
+    return sizes[type]!.min > sizes[other.type]!.min;
   }
 }
 
@@ -69,7 +69,7 @@ class AlfreedContext {
   AlfreedContext(
     this.buildContext, {
     this.animations,
-  }) : this.device = Device.fromSize(MediaQuery.of(buildContext).size);
+  }) : device = Device.fromSize(MediaQuery.of(buildContext).size);
 
   Orientation get orientation => MediaQuery.of(buildContext).orientation;
 

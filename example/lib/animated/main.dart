@@ -5,7 +5,7 @@ import 'model.dart';
 import 'presenter.dart';
 
 void main() {
-  runApp(SimpleBuilderApp());
+  runApp(const SimpleBuilderApp());
 }
 
 class ViewInterface extends AlfreedView {
@@ -19,14 +19,14 @@ class ViewInterface extends AlfreedView {
 
 var myPageBuilder =
     AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
-  key: ValueKey("presenter"),
+  key: const ValueKey("presenter"),
   singleAnimControllerBuilder: (ticker) {
-    var controller =
-        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var controller = AnimationController(
+        vsync: ticker, duration: const Duration(seconds: 1));
     var animation1 = CurvedAnimation(
-        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+        parent: controller, curve: const Interval(0, .4, curve: Curves.easeIn));
     var animation2 = CurvedAnimation(
-        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+        parent: controller, curve: const Interval(0, .6, curve: Curves.easeIn));
     return {
       '': AlfreedAnimation(controller, subAnimations: [animation1, animation2])
     };
@@ -52,7 +52,7 @@ var myPageBuilder =
                     subtitle: Text(model.todoList![index].subtitle),
                   ),
                 ),
-            separatorBuilder: (context, index) => Divider(height: 1),
+            separatorBuilder: (context, index) => const Divider(height: 1),
             itemCount: model.todoList?.length ?? 0),
       ),
       floatingActionButton: ctx.device < Device.large()
@@ -60,7 +60,7 @@ var myPageBuilder =
               backgroundColor: Colors.redAccent,
               onPressed: () =>
                   presenter.addTodoWithRefresh("Button Todo created"),
-              child: Icon(Icons.plus_one),
+              child: const Icon(Icons.plus_one),
             )
           : null,
     );
@@ -70,13 +70,15 @@ var myPageBuilder =
 );
 
 Route<dynamic> route(RouteSettings settings) {
-  print("...[call route] ${settings.name}");
+  debugPrint("...[call route] ${settings.name}");
   return MaterialPageRoute(builder: myPageBuilder.build);
 }
 
 class SimpleBuilderApp extends StatelessWidget {
+  const SimpleBuilderApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(onGenerateRoute: route);
+    return const MaterialApp(onGenerateRoute: route);
   }
 }

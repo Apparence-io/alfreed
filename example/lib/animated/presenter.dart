@@ -4,34 +4,28 @@ import 'model.dart';
 
 class MyPresenter extends Presenter<MyModel, ViewInterface> {
   MyPresenter() : super(state: MyModel()) {
-    this.state!.title = "My todo list";
-    this.state!.todoList = [];
+    state.title = "My todo list";
+    state.todoList = [];
   }
 
   @override
   Future onInit() async {
-    this.state!.todoList = [];
+    state.todoList = [];
     for (int i = 0; i < 4; i++) {
-      this.state!.todoList!.add(new TodoModel("TODO $i", "my todo task $i"));
+      state.todoList!.add(TodoModel("TODO $i", "my todo task $i"));
     }
-    this.state!.animate = true;
-    this.refreshView();
+    state.animate = true;
+    refreshView();
     animations!.values.first.controller.forward();
     super.onInit();
   }
 
   void addTodo(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
     refreshView();
   }
 

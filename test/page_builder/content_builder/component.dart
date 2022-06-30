@@ -30,37 +30,31 @@ class TodoModel {
 
 class MyPresenter extends Presenter<MyModel, ViewInterface> {
   MyPresenter() : super(state: MyModel()) {
-    this.state!.title = "My todo list";
-    this.state!.todoList = [];
+    state.title = "My todo list";
+    state.todoList = [];
   }
 
   @override
   void onInit() {
     for (int i = 0; i < 4; i++) {
-      this.state!.todoList!.add(new TodoModel("TODO $i", "my todo task $i"));
+      state.todoList!.add(TodoModel("TODO $i", "my todo task $i"));
     }
-    this.refreshView();
+    refreshView();
     super.onInit();
   }
 
   @override
   void onDeactivate() {
-    state!.deactivated = true;
+    state.deactivated = true;
     super.onDeactivate();
   }
 
   void addTodo(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
     refreshView();
   }
 
@@ -76,11 +70,11 @@ class PageArguments {
 }
 
 var secondPage = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter"),
+  key: const ValueKey("presenter"),
   builder: (ctx, presenter, model) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(child: Text("second page")),
+      body: const Center(child: Text("second page")),
     );
   },
   presenterBuilder: (context) => MyPresenter(),
@@ -88,11 +82,11 @@ var secondPage = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
 );
 
 var page3 = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-  key: ValueKey("presenter3"),
+  key: const ValueKey("presenter3"),
   builder: (ctx, presenter, model) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(child: Text("page3")),
+      body: const Center(child: Text("page3")),
     );
   },
   presenterBuilder: (context) => MyPresenter(),

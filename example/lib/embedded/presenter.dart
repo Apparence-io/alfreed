@@ -1,35 +1,30 @@
 import 'package:alfreed/alfreed.dart';
+import 'package:flutter/material.dart';
 import 'main.dart';
 import 'model.dart';
 
 class MyPresenter extends Presenter<MyModel, ViewInterface> {
   MyPresenter() : super(state: MyModel()) {
-    print("create presenter");
-    this.state!.title = "My todo list";
+    debugPrint("create presenter");
+    state.title = "My todo list";
   }
 
   @override
   Future onInit() async {
-    this.state!.todoList = [];
+    state.todoList = [];
     for (int i = 0; i < 4; i++) {
-      this.state!.todoList!.add(new TodoModel("TODO $i", "my todo task $i"));
+      state.todoList!.add(TodoModel("TODO $i", "my todo task $i"));
     }
-    this.refreshView();
+    refreshView();
     super.onInit();
   }
 
   void addTodo(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
     refreshView();
   }
 

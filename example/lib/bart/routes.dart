@@ -13,7 +13,7 @@ List<BartMenuRoute> subRoutes() {
       pageBuilder: (context, settings) => PageFake(
         Colors.black12,
         rebuildAfterDisposed: false,
-        pageStorageKey: PageStorageKey<String>("home"),
+        pageStorageKey: const PageStorageKey<String>("home"),
       ),
     ),
     BartMenuRoute.bottomBar(
@@ -23,7 +23,7 @@ List<BartMenuRoute> subRoutes() {
       pageBuilder: (context, settings) => PageFake(
         Colors.blueGrey.shade100,
         rebuildAfterDisposed: false,
-        pageStorageKey: PageStorageKey<String>("library"),
+        pageStorageKey: const PageStorageKey<String>("library"),
       ),
     ),
     BartMenuRoute.bottomBar(
@@ -39,7 +39,7 @@ List<BartMenuRoute> subRoutes() {
       label: "Colors",
       icon: Icons.person,
       path: '/colors',
-      pageBuilder: (context, settings) => ColorBoxPage(
+      pageBuilder: (context, settings) => const ColorBoxPage(
         key: PageStorageKey<String>('colors'),
       ),
     )

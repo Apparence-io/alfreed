@@ -6,7 +6,7 @@ import 'model.dart';
 import 'presenter.dart';
 
 void main() {
-  runApp(SimpleBuilderApp());
+  runApp(const SimpleBuilderApp());
 }
 
 class ViewInterface extends AlfreedView {
@@ -23,10 +23,12 @@ class ViewInterface extends AlfreedView {
 }
 
 class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  FirstPage({Key? key}) : super(key: key);
+
   @override
   AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
     return AlfreedPageBuilder(
-      key: ValueKey("presenter"),
+      key: const ValueKey("presenter"),
       builder: (ctx, presenter, model) {
         return Scaffold(
           appBar: AppBar(
@@ -41,7 +43,7 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
               IconButton(
                 icon: const Icon(Icons.ac_unit_rounded),
                 tooltip: 'pop Snackbar',
-                onPressed: () => print("test"),
+                onPressed: () => debugPrint("test"),
               ),
             ],
           ),
@@ -54,7 +56,7 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
                       leading: EmbeddedPage(),
                     ),
                   ),
-              separatorBuilder: (context, index) => Divider(height: 1),
+              separatorBuilder: (context, index) => const Divider(height: 1),
               itemCount: model.todoList?.length ?? 0),
           floatingActionButton: ctx.device < Device.large()
               ? FloatingActionButton(
@@ -62,7 +64,7 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
                   onPressed: () =>
                       presenter.addTodoWithRefresh("Button Todo created"),
                   // child: Icon(Icons.plus_one),
-                  child: Icon(Icons.ac_unit_outlined),
+                  child: const Icon(Icons.ac_unit_outlined),
                 )
               : null,
         );
@@ -74,10 +76,12 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
 }
 
 class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
+  SecondPage({Key? key}) : super(key: key);
+
   @override
   AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
     return AlfreedPageBuilder(
-      key: ValueKey("presenter"),
+      key: const ValueKey("presenter"),
       builder: (ctx, presenter, model) {
         return Scaffold(
           appBar: AppBar(
@@ -98,14 +102,14 @@ class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
                       subtitle: Text(model.todoList![index].subtitle),
                     ),
                   ),
-              separatorBuilder: (context, index) => Divider(height: 1),
+              separatorBuilder: (context, index) => const Divider(height: 1),
               itemCount: model.todoList?.length ?? 0),
           floatingActionButton: ctx.device < Device.large()
               ? FloatingActionButton(
                   backgroundColor: Colors.redAccent,
                   onPressed: () =>
                       presenter.addTodoWithRefresh("Button Todo created"),
-                  child: Icon(Icons.plus_one),
+                  child: const Icon(Icons.plus_one),
                 )
               : null,
         );
@@ -133,21 +137,23 @@ class _StfulEmbedderState extends State<StfulEmbedder> {
 }
 
 Route<dynamic> route(RouteSettings settings) {
-  print("...[call route] ${settings.name}");
+  debugPrint("...[call route] ${settings.name}");
   switch (settings.name) {
     case '/second':
       return MaterialPageRoute(builder: (_) => SecondPage());
     default:
       return MaterialPageRoute(builder: (_) {
-        print("build first page");
+        debugPrint("build first page");
         return StfulEmbedder(child: FirstPage());
       });
   }
 }
 
 class SimpleBuilderApp extends StatelessWidget {
+  const SimpleBuilderApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(onGenerateRoute: route);
+    return const MaterialApp(onGenerateRoute: route);
   }
 }

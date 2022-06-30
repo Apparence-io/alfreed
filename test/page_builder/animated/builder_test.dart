@@ -11,7 +11,7 @@ void main() {
   group('Animated builder', () {
     testWidgets('Builds page correctly using alfreed',
         (WidgetTester tester) async {
-      await tester.pumpWidget(AnimatedBuilderApp());
+      await tester.pumpWidget(const AnimatedBuilderApp());
       expect(find.text('my todo task 1'), findsOneWidget);
       expect(find.text('my todo task 2'), findsOneWidget);
       expect(find.text('my todo task 3'), findsOneWidget);
@@ -19,24 +19,24 @@ void main() {
 
     testWidgets('Using presenter directly -> add a todo and refresh view',
         (WidgetTester tester) async {
-      await tester.pumpWidget(AnimatedBuilderApp());
+      await tester.pumpWidget(const AnimatedBuilderApp());
       var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
-          tester, ValueKey("presenter"));
+          tester, const ValueKey("presenter"));
       presenter.addTodo('my todo task NEW');
       expect(find.text('my todo task NEW'), findsNothing);
       presenter.refreshView();
-      await tester.pumpAndSettle(Duration(milliseconds: 100));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       expect(find.text('my todo task NEW'), findsOneWidget);
     });
 
     testWidgets(
         'Press add todo from floating button -> a new Todo is available',
         (WidgetTester tester) async {
-      await tester.pumpWidget(AnimatedBuilderApp());
+      await tester.pumpWidget(const AnimatedBuilderApp());
       var floatingFinder = find.byType(FloatingActionButton);
       expect(find.text('Button Todo created'), findsNothing);
       await tester.tap(floatingFinder);
-      await tester.pumpAndSettle(Duration(milliseconds: 100));
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       expect(find.text('Button Todo created'), findsOneWidget);
     });
   });
@@ -45,6 +45,7 @@ void main() {
     testWidgets(
         'Provide multiple animation using single animate factory -> throw',
         (WidgetTester tester) async {
+      // ignore: prefer_typing_uninitialized_variables
       var exceptionRes;
       FlutterError.onError = (details) {
         exceptionRes = details.exception;

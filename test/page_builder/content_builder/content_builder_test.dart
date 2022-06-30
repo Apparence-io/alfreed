@@ -12,7 +12,7 @@ void main() {
   var presenterMock = MyPresenterMock();
 
   var myPageBuilder = AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-    key: ValueKey("presenter"),
+    key: const ValueKey("presenter"),
     builder: (ctx, presenter, model) {
       return Scaffold(
         // key: _scaffoldKey,
@@ -41,12 +41,12 @@ void main() {
                     subtitle: Text(model.todoList![index].subtitle),
                   ),
                 ),
-            separatorBuilder: (context, index) => Divider(height: 1),
+            separatorBuilder: (context, index) => const Divider(height: 1),
             itemCount: model.todoList?.length ?? 0),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.redAccent,
           onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
-          child: Icon(Icons.plus_one),
+          child: const Icon(Icons.plus_one),
         ),
       );
     },
@@ -95,9 +95,9 @@ void main() {
     when(presenterMock.afterViewInit()).thenReturn(null);
     await _beforeEach(tester);
     await tester.tap(find.byType(IconButton).at(1));
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
     await tester.pageBack();
-    await tester.pumpAndSettle(Duration(milliseconds: 100));
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
     verify(presenterMock.onInit()).called(1);
     verify(presenterMock.afterViewInit()).called(1);
   });

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_this
+
 import 'package:flutter/material.dart';
 
 import '../alfreed.dart';
@@ -132,7 +134,7 @@ class AlfreedPageBuilder<P extends Presenter, M, I extends AlfreedView> {
         'Cannot have both a single and a multiple animation controller builder.');
     if (_presenter == null ||
         forceRebuild ||
-        (_presenter?.presenterState == PresenterState.DISPOSED &&
+        (_presenter?.presenterState == PresenterState.disposed &&
             rebuildIfDisposed)) {
       _presenter = presenterBuilder(context);
     }

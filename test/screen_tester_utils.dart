@@ -16,7 +16,7 @@ List<ScreenSize>? devicesScreenConfigs;
 
 extension ScreenSizeManager on WidgetTester {
   Future<void> setScreenSize(ScreenSize screenSize) async {
-    return this._setScreenSize(
+    return _setScreenSize(
         width: screenSize.width,
         height: screenSize.height,
         pixelDensity: screenSize.pixelDensity);
@@ -27,25 +27,25 @@ extension ScreenSizeManager on WidgetTester {
       double height = 960,
       double pixelDensity = 1}) async {
     final size = Size(width, height);
-    await this.binding.setSurfaceSize(size);
-    this.binding.window.physicalSizeTestValue = size;
-    this.binding.window.devicePixelRatioTestValue = pixelDensity;
+    await binding.setSurfaceSize(size);
+    binding.window.physicalSizeTestValue = size;
+    binding.window.devicePixelRatioTestValue = pixelDensity;
   }
 
   // works for Iphone 11 max
   Future<void> setIphone11Max() =>
-      this._setScreenSize(width: 414, height: 896, pixelDensity: 3);
+      _setScreenSize(width: 414, height: 896, pixelDensity: 3);
 
   // works for iphones size : 6+, 6s, 7+, 8+
   Future<void> setIphone8Plus() =>
-      this._setScreenSize(width: 414, height: 736, pixelDensity: 3);
+      _setScreenSize(width: 414, height: 736, pixelDensity: 3);
 
   Future<void> setWeb1920() =>
-      this._setScreenSize(width: 1920, height: 1200, pixelDensity: 3);
+      _setScreenSize(width: 1920, height: 1200, pixelDensity: 3);
 
   Future<void> setWeb1280() =>
-      this._setScreenSize(width: 1280, height: 1024, pixelDensity: 3);
+      _setScreenSize(width: 1280, height: 1024, pixelDensity: 3);
 
   Future<void> setTablet() =>
-      this._setScreenSize(width: 750, height: 400, pixelDensity: 3);
+      _setScreenSize(width: 750, height: 400, pixelDensity: 3);
 }

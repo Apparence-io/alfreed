@@ -14,6 +14,7 @@ class SingleAnimationException implements Exception {
     You cannot provide more than one animation in a single animated page
     ''');
 
+  @override
   String toString() => "Exception: $message";
 }
 
@@ -52,7 +53,7 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
   @override
   void deactivate() {
     presenter.onDeactivate();
-    this.disposeAnimation();
+    disposeAnimation();
     super.deactivate();
   }
 
@@ -82,7 +83,7 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
 
   @override
   Future<void> disposeAnimation() async {
-    if (_animation != null && _animation!.length > 0) {
+    if (_animation != null && _animation!.isNotEmpty) {
       for (var el in _animation!.values) {
         el.controller.stop();
         el.controller.dispose();

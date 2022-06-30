@@ -38,7 +38,7 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
   @override
   void deactivate() {
     presenter.onDeactivate();
-    this.disposeAnimation();
+    disposeAnimation();
     super.deactivate();
   }
 
@@ -67,7 +67,7 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
 
   @override
   Future<void> disposeAnimation() async {
-    if (_animations != null && _animations!.length > 0) {
+    if (_animations != null && _animations!.isNotEmpty) {
       for (var el in _animations!.values) {
         el.controller.stop();
         el.controller.dispose();

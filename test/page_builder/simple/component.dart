@@ -28,38 +28,32 @@ class TodoModel {
 
 class MyPresenter extends Presenter<MyModel, ViewInterface> {
   MyPresenter() : super(state: MyModel()) {
-    this.state!.title = "My todo list";
-    this.state!.todoList = [];
+    state.title = "My todo list";
+    state.todoList = [];
   }
 
   @override
   Future onInit() async {
-    print("...onInit called");
+    debugPrint("...onInit called");
     for (int i = 0; i < 4; i++) {
-      this.state!.todoList!.add(new TodoModel("TODO $i", "my todo task $i"));
+      state.todoList!.add(TodoModel("TODO $i", "my todo task $i"));
     }
-    this.refreshView();
+    refreshView();
     super.onInit();
   }
 
   @override
   void onDeactivate() {
-    state!.deactivated = true;
+    state.deactivated = true;
     super.onDeactivate();
   }
 
   void addTodo(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
     refreshView();
   }
 
@@ -78,13 +72,15 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   final bool rebuildAfterDisposed;
   final String? presenterName;
   FirstPage(
-      {Object? args, this.rebuildAfterDisposed = true, this.presenterName})
-      : super(args: args);
+      {Key? key,
+      Object? args,
+      this.rebuildAfterDisposed = true,
+      this.presenterName})
+      : super(key: key, args: args);
 
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
-      get alfreedPageBuilder {
-    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
+    return AlfreedPageBuilder(
       key: ValueKey(presenterName ?? "presenter"),
       builder: (ctx, presenter, model) {
         return Scaffold(
@@ -119,13 +115,13 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
                       subtitle: Text(model.todoList![index].subtitle),
                     ),
                   ),
-              separatorBuilder: (context, index) => Divider(height: 1),
+              separatorBuilder: (context, index) => const Divider(height: 1),
               itemCount: model.todoList?.length ?? 0),
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.redAccent,
             onPressed: () =>
                 presenter.addTodoWithRefresh("Button Todo created"),
-            child: Icon(Icons.plus_one),
+            child: const Icon(Icons.plus_one),
           ),
         );
       },
@@ -138,16 +134,16 @@ class FirstPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
 
 class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   SecondPage({
+    Key? key,
     Object? args,
-  }) : super(args: args);
+  }) : super(key: key, args: args);
 
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
-      get alfreedPageBuilder {
-    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-      key: ValueKey("presenter"),
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
+    return AlfreedPageBuilder(
+      key: const ValueKey("presenter"),
       builder: (ctx, presenter, model) {
-        return Scaffold(
+        return const Scaffold(
           body: Center(child: Text("second page")),
         );
       },
@@ -158,17 +154,16 @@ class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
 }
 
 class ThirdPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
-  ThirdPage();
+  ThirdPage({Key? key}) : super(key: key);
 
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>
-      get alfreedPageBuilder {
-    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
-      key: ValueKey("presenter3"),
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
+    return AlfreedPageBuilder(
+      key: const ValueKey("presenter3"),
       builder: (ctx, presenter, model) {
         return Scaffold(
           appBar: AppBar(),
-          body: Center(child: Text("page3")),
+          body: const Center(child: Text("page3")),
         );
       },
       presenterBuilder: (context) => MyPresenter(),
@@ -178,7 +173,7 @@ class ThirdPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
 }
 
 Route<dynamic> route(RouteSettings settings) {
-  print("push ${settings.name}");
+  debugPrint("push ${settings.name}");
   switch (settings.name) {
     case '/second':
       return MaterialPageRoute(
@@ -193,16 +188,18 @@ Route<dynamic> route(RouteSettings settings) {
 }
 
 class SimpleBuilderApp extends StatelessWidget {
+  const SimpleBuilderApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(onGenerateRoute: route);
+    return const MaterialApp(onGenerateRoute: route);
   }
 }
 
 Widget? firstPageCache;
 
 Route<dynamic> routeWithCache(RouteSettings settings) {
-  print("push ${settings.name}");
+  debugPrint("push ${settings.name}");
   switch (settings.name) {
     case '/second':
       return MaterialPageRoute(
@@ -211,7 +208,7 @@ Route<dynamic> routeWithCache(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => ThirdPage());
     case '/pageWithNoRebuildAfterDisposed':
       if (firstPageCache == null) {
-        print("build first page");
+        debugPrint("build first page");
         firstPageCache = FirstPage(rebuildAfterDisposed: false);
       }
       return MaterialPageRoute(builder: (_) => firstPageCache!);
@@ -221,14 +218,16 @@ Route<dynamic> routeWithCache(RouteSettings settings) {
 }
 
 class CachedBuilder extends StatelessWidget {
+  const CachedBuilder({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(onGenerateRoute: routeWithCache);
+    return const MaterialApp(onGenerateRoute: routeWithCache);
   }
 }
 
 Route<dynamic> routeWithCacheForceRebuild(RouteSettings settings) {
-  print("push ${settings.name}");
+  debugPrint("push ${settings.name}");
   switch (settings.name) {
     case '/second':
       return MaterialPageRoute(
@@ -252,8 +251,10 @@ Route<dynamic> routeWithCacheForceRebuild(RouteSettings settings) {
 }
 
 class CachedWithRebuildOnDisposeBuilder extends StatelessWidget {
+  const CachedWithRebuildOnDisposeBuilder({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(onGenerateRoute: routeWithCacheForceRebuild);
+    return const MaterialApp(onGenerateRoute: routeWithCacheForceRebuild);
   }
 }

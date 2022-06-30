@@ -28,11 +28,11 @@ abstract class ContentView {
 }
 
 class MVVMContent<P extends Presenter, M> extends StatefulWidget {
-  late final AlfreedAnimationBuilder? singleAnimController;
-  late final AlfreedAnimationsBuilder? multipleAnimController;
-  late final MvvmAnimationListener<P, M>? animListener;
+  final AlfreedAnimationBuilder? singleAnimController;
+  final AlfreedAnimationsBuilder? multipleAnimController;
+  final MvvmAnimationListener<P, M>? animListener;
 
-  MVVMContent({
+  const MVVMContent({
     Key? key,
     this.singleAnimController,
     this.multipleAnimController,
@@ -40,6 +40,7 @@ class MVVMContent<P extends Presenter, M> extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: no_logic_in_create_state
   State<MVVMContent> createState() {
     if (multipleAnimController != null) {
       return MVVMMultipleTickerProviderContentState<P, M>(animListener!);

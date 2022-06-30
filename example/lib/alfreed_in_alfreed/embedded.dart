@@ -28,7 +28,7 @@ class EmbeddedPage extends AlfreedPage<EmbeddedPresenter, EmbeddedViewModel,
       presenterBuilder: (context) => EmbeddedPresenter(),
       interfaceBuilder: (context) => EmbeddedViewInterface(context),
       builder: (context, presenter, model) => Container(
-        padding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(4),
         child: Text(model.text),
       ),
     );

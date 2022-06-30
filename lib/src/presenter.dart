@@ -61,7 +61,7 @@ abstract class AlfreedView {
   AlfreedView({required this.context});
 }
 
-enum PresenterState { CREATED, VIEW_CREATED, DISPOSED }
+enum PresenterState { created, viewCreated, disposed }
 
 /// This class must be overriden too
 abstract class Presenter<T, I extends AlfreedView> {
@@ -96,26 +96,26 @@ abstract class Presenter<T, I extends AlfreedView> {
   @mustCallSuper
   void onInit() {
     hasInit = true;
-    _presenterState = PresenterState.CREATED;
+    _presenterState = PresenterState.created;
   }
 
   /// called when view has been drawn for the 1st time
   @mustCallSuper
   void afterViewInit() {
-    _presenterState = PresenterState.VIEW_CREATED;
+    _presenterState = PresenterState.viewCreated;
   }
 
   /// called when view is pop out or hidden
   @mustCallSuper
   void onDeactivate() {
-    _presenterState = PresenterState.DISPOSED;
+    _presenterState = PresenterState.disposed;
   }
 
   /// called only in dev mode. Reload state on hot reload
   @mustCallSuper
   void onReassemble() {
-    if (this.rebuildOnHotReload) {
-      this.onInit();
+    if (rebuildOnHotReload) {
+      onInit();
     }
   }
 

@@ -17,7 +17,7 @@ class PageFake extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   @override
   AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
     return AlfreedPageBuilder(
-      key: ValueKey("presenter"),
+      key: const ValueKey("presenter"),
       builder: (ctx, presenter, model) {
         return Scaffold(
           appBar: AppBar(
@@ -33,14 +33,14 @@ class PageFake extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
                       subtitle: Text(model.todoList![index].subtitle),
                     ),
                   ),
-              separatorBuilder: (context, index) => Divider(height: 1),
+              separatorBuilder: (context, index) => const Divider(height: 1),
               itemCount: model.todoList?.length ?? 0),
           floatingActionButton: ctx.device < Device.large()
               ? FloatingActionButton(
                   backgroundColor: Colors.redAccent,
                   onPressed: () =>
                       presenter.addTodoWithRefresh("Button Todo created"),
-                  child: Icon(Icons.plus_one),
+                  child: const Icon(Icons.plus_one),
                 )
               : null,
         );

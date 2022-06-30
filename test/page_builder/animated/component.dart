@@ -24,34 +24,28 @@ class TodoModel {
 
 class MyPresenter extends Presenter<MyModel, ViewInterface> {
   MyPresenter() : super(state: MyModel()) {
-    this.state!.title = "My todo list";
-    this.state!.todoList = [];
+    state.title = "My todo list";
+    state.todoList = [];
   }
 
   @override
   Future onInit() async {
-    this.state!.todoList = [];
+    state.todoList = [];
     for (int i = 0; i < 4; i++) {
-      this.state!.todoList!.add(new TodoModel("TODO $i", "my todo task $i"));
+      state.todoList!.add(TodoModel("TODO $i", "my todo task $i"));
     }
-    this.refreshView();
-    state!.animate = true;
+    refreshView();
+    state.animate = true;
     refreshAnimations();
     super.onInit();
   }
 
   void addTodo(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
   }
 
   void addTodoWithRefresh(String s) {
-    this
-        .state!
-        .todoList!
-        .add(new TodoModel("TODO ${this.state!.todoList!.length - 1}", s));
+    state.todoList!.add(TodoModel("TODO ${state.todoList!.length - 1}", s));
     refreshView();
   }
 
@@ -62,14 +56,14 @@ class MyPresenter extends Presenter<MyModel, ViewInterface> {
 
 var myPageBuilder =
     AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
-  key: ValueKey("presenter"),
+  key: const ValueKey("presenter"),
   singleAnimControllerBuilder: (ticker) {
-    var controller =
-        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var controller = AnimationController(
+        vsync: ticker, duration: const Duration(seconds: 1));
     var animation1 = CurvedAnimation(
-        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+        parent: controller, curve: const Interval(0, .4, curve: Curves.easeIn));
     var animation2 = CurvedAnimation(
-        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+        parent: controller, curve: const Interval(0, .6, curve: Curves.easeIn));
     return {
       '': AlfreedAnimation(controller, subAnimations: [animation1, animation2])
     };
@@ -91,12 +85,12 @@ var myPageBuilder =
                   subtitle: Text(model.todoList![index].subtitle),
                 ),
               ),
-          separatorBuilder: (context, index) => Divider(height: 1),
+          separatorBuilder: (context, index) => const Divider(height: 1),
           itemCount: model.todoList?.length ?? 0),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.redAccent,
         onPressed: () => presenter.addTodoWithRefresh("Button Todo created"),
-        child: Icon(Icons.plus_one),
+        child: const Icon(Icons.plus_one),
       ),
     );
   },
@@ -107,14 +101,14 @@ var myPageBuilder =
 // this should throw as we provide multiple animations
 var pageWithMultiAnimOnSingle =
     AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(
-  key: ValueKey("presenter"),
+  key: const ValueKey("presenter"),
   singleAnimControllerBuilder: (ticker) {
-    var controller =
-        AnimationController(vsync: ticker, duration: Duration(seconds: 1));
+    var controller = AnimationController(
+        vsync: ticker, duration: const Duration(seconds: 1));
     var animation1 = CurvedAnimation(
-        parent: controller, curve: Interval(0, .4, curve: Curves.easeIn));
+        parent: controller, curve: const Interval(0, .4, curve: Curves.easeIn));
     var animation2 = CurvedAnimation(
-        parent: controller, curve: Interval(0, .6, curve: Curves.easeIn));
+        parent: controller, curve: const Interval(0, .6, curve: Curves.easeIn));
     return {
       '1':
           AlfreedAnimation(controller, subAnimations: [animation1, animation2]),
@@ -137,13 +131,15 @@ var pageWithMultiAnimOnSingle =
 );
 
 Route<dynamic> route(RouteSettings settings) {
-  print("...[call route] ${settings.name}");
+  debugPrint("...[call route] ${settings.name}");
   return MaterialPageRoute(builder: myPageBuilder.build);
 }
 
 class AnimatedBuilderApp extends StatelessWidget {
+  const AnimatedBuilderApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(onGenerateRoute: route);
+    return const MaterialApp(onGenerateRoute: route);
   }
 }
