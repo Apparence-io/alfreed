@@ -10,6 +10,9 @@ This lib is used for our apps and is open for all.
 
 This force split business logic / view for your pages. 
 
+**This is not a state management lib**<br/>
+You can combine Alfreed with bloc, rxdart or riverpod for reactive update.<br/> 
+See examples for more infos...*(bloc, riverpod example coming next)*
 
 ## Install
 Add alfreed in your pubspec and import it. 
@@ -25,8 +28,8 @@ class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   SecondPage({Object? args}) : super(args: args);
 
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> get alfreedPageBuilder {
-    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
+    return AlfreedPageBuilder(
       key: ValueKey("presenter"),
       builder: (ctx, presenter, model) {
         return Scaffold(
@@ -104,8 +107,8 @@ Use ```rebuildIfDisposed``` parameter.
 ```dart
 class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
   @override
-  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> get alfreedPageBuilder {
-    return AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
+  AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface> build() {
+    return AlfreedPageBuilder(
       key: ValueKey("presenter"),
       builder: (ctx, presenter, model) => Scaffold(appBar: AppBar(title: Text(model.title ?? ""))),
       presenterBuilder: (context) => MyPresenter(),
