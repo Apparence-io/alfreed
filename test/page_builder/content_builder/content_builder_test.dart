@@ -1,7 +1,7 @@
 import 'package:alfreed/alfreed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import 'component.dart';
 
@@ -76,29 +76,29 @@ void main() {
   testWidgets('on page started -> onInit is called, onViewCreated is called',
       (WidgetTester tester) async {
     var state = MyModel();
-    when(presenterMock.hasInit).thenReturn(false);
-    when(presenterMock.state).thenReturn(state);
-    when(presenterMock.onInit()).thenReturn(null);
-    when(presenterMock.afterViewInit()).thenReturn(null);
+    when(() => presenterMock.hasInit).thenReturn(false);
+    when(() => presenterMock.state).thenReturn(state);
+    when(() => presenterMock.onInit()).thenReturn(null);
+    when(() => presenterMock.afterViewInit()).thenReturn(null);
     await _beforeEach(tester);
-    verify(presenterMock.onInit()).called(1);
-    verify(presenterMock.afterViewInit()).called(1);
+    verify(() => presenterMock.onInit()).called(1);
+    verify(() => presenterMock.afterViewInit()).called(1);
   });
 
   testWidgets(
       'push page3, pop page, push back page3 -> onInit is not called again',
       (WidgetTester tester) async {
     var state = MyModel();
-    when(presenterMock.state).thenReturn(state);
-    when(presenterMock.hasInit).thenReturn(false);
-    when(presenterMock.onInit()).thenReturn(null);
-    when(presenterMock.afterViewInit()).thenReturn(null);
+    when(() => presenterMock.state).thenReturn(state);
+    when(() => presenterMock.hasInit).thenReturn(false);
+    when(() => presenterMock.onInit()).thenReturn(null);
+    when(() => presenterMock.afterViewInit()).thenReturn(null);
     await _beforeEach(tester);
     await tester.tap(find.byType(IconButton).at(1));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     await tester.pageBack();
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
-    verify(presenterMock.onInit()).called(1);
-    verify(presenterMock.afterViewInit()).called(1);
+    verify(() => presenterMock.onInit()).called(1);
+    verify(() => presenterMock.afterViewInit()).called(1);
   });
 }

@@ -39,6 +39,6 @@ class _AlfreedFullPageState<P extends Presenter, M, I extends AlfreedView>
     if (_builder != null) {
       return _builder!.build(context, args: widget.args);
     }
-    return widget.builder.build(context);
+    return widget.builder.build(context, args: widget.args);
   }
 }

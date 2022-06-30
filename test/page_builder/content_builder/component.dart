@@ -1,6 +1,6 @@
 import 'package:alfreed/alfreed.dart';
 import 'package:flutter/material.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MyPresenterMock<MyModel, ViewInterface> extends Mock
     implements MyPresenter {}
