@@ -283,3 +283,8 @@ Preferences > User snippets
 		]
 	}
 ```
+
+<hr/>
+<br><br>
+<a href="https://en.apparence.io"><img src="https://github.com/Apparence-io/bart/raw/master/.github/img/logo.png" alt="Apparence.io logo"></a>
+<p><small>Developed with 💙 &nbsp;by Apparence.io</small></p>
