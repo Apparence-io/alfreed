@@ -266,7 +266,7 @@ Preferences > User snippets
 			"  ${1:name}Page({Object? args, Key? key}) : super(args: args, key: key);",
 			"",
 			"  @override",
-			"  AlfreedPageBuilder<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface build() {",
+			"  AlfreedPageBuilder<${1:name}Presenter, ${1:name}ViewModel, ${1:name}ViewInterface> build() {",
 			"    return AlfreedPageBuilder(",
 			"      key: ValueKey('presenter'),",
 			"      presenterBuilder: (context) => ${1:name}Presenter(),",
