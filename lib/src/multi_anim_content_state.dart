@@ -10,7 +10,6 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
     implements ContentView {
   Map<String, AlfreedAnimation>? _animations;
   final MvvmAnimationListener<P, M> animListener;
-  bool hasInit = false;
 
   MVVMMultipleTickerProviderContentState(this.animListener);
 
@@ -20,19 +19,19 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
     presenter.viewRef = this;
     _animations = widget.multipleAnimController!(this);
     if (!hasInit) {
-      hasInit = true;
       presenter.onInit();
-      ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
-        presenter.afterViewInit();
-      });
     }
+    ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
+      if (mounted) {
+        presenter.afterViewInit();
+      }
+    });
   }
 
   @override
   void reassemble() {
+    presenter.onReassemble();
     super.reassemble();
-    presenter.onInit();
-    hasInit = false;
   }
 
   @override
@@ -51,6 +50,10 @@ class MVVMMultipleTickerProviderContentState<P extends Presenter, M>
 
   AlfreedContext get mvvmContext =>
       AlfreedContext(context, animations: _animations);
+
+  bool get hasInit => presenter.hasInit!;
+
+  set hasInit(bool value) => presenter.hasInit = value;
 
   P get presenter => PresenterInherited.of<P, M>(context).presenter;
 

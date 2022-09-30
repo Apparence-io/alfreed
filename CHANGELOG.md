@@ -1,3 +1,6 @@
+## 0.4.1
+- fix animated factory init state not properly working
+
 ## 0.4.0
 - AlfreedPage get alfreedpageBuilder is now build()
 - get viewmodel from any alfreedPage child

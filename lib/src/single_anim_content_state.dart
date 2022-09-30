@@ -24,7 +24,6 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
     implements ContentView {
   Map<String, AlfreedAnimation>? _animation;
   final MvvmAnimationListener<P, M> animListener;
-  bool hasInit = false;
 
   MVVMSingleTickerProviderContentState(this.animListener);
 
@@ -35,19 +34,19 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
     _animation = widget.singleAnimController!(this);
     if (_animation!.length > 1) throw SingleAnimationException.multipleAnim();
     if (!hasInit) {
-      hasInit = true;
       presenter.onInit();
-      ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
-        presenter.afterViewInit();
-      });
     }
+    ambiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
+      if (mounted) {
+        presenter.afterViewInit();
+      }
+    });
   }
 
   @override
   void reassemble() {
+    presenter.onReassemble();
     super.reassemble();
-    presenter.onInit();
-    hasInit = false;
   }
 
   @override
@@ -66,6 +65,10 @@ class MVVMSingleTickerProviderContentState<P extends Presenter, M>
 
   AlfreedContext get mvvmContext =>
       AlfreedContext(context, animations: _animation);
+
+  bool get hasInit => presenter.hasInit!;
+
+  set hasInit(bool value) => presenter.hasInit = value;
 
   P get presenter => PresenterInherited.of<P, M>(context).presenter;
 
