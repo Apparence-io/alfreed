@@ -44,11 +44,11 @@ class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
 }
 ```
 
-Every build or defered to let our navigation beeing responsible for building them. (see routing section).
+Every build is defered to make our navigation responsible for building them. (see routing section).
 
 * **builder**: build your flutter page content (widgets...)
 * **presenterBuilder**: build your presenter (business logic class)
-* **interfaceBuilder**: build your view interface (business logic call this class to interact with our application without knowing flutter). Goal is to hide flutter from our business logic. (***Example: showSnackBar(String message) Without any context in parameters***)
+* **interfaceBuilder**: build your view interface (business logic calls this class to interact with our application without knowing flutter). Goal is to hide flutter from our business logic. (***Example: showSnackBar(String message) Without any context in parameters***)
 * **key**(***optionnal***): used to get a reference to the presenter
 
 > Note: we extends [AlfreedPage] to handle hot reload. Without hot reload we could remove this layer. 
@@ -56,9 +56,9 @@ Every build or defered to let our navigation beeing responsible for building the
 ### Create a presenter 
 Create a presenter extending ```Presenter``` class. 
 This is where you write your business logic. 
-There is only and only one presenter instance available in the widget tree. 
+There is one and only one presenter instance available in the widget tree. 
 
->An instance of this will be available in the builder method seen in previous stage (Create a page builder). 
+>An instance of this will be available in the builder method seen in the previous stage (Create a page builder). 
 
 ```dart
 class MyPresenter extends Presenter<MyModel, ViewInterface> {
@@ -120,8 +120,8 @@ class SecondPage extends AlfreedPage<MyPresenter, MyModel, ViewInterface> {
 ```
 
 ## Responsive state management
-Our build method contain a special context named ```AlfredContext```. 
-This class contains a ```Device``` attribute you can use to make your view for different size of devices. 
+Our build method contains a special context named ```AlfredContext```. 
+This class contains a ```Device``` attribute you can use to make your view for different device sizes. 
 > We used twitter bootstrap sizes ref to create range of devices
 
 Device type can be :
@@ -130,7 +130,7 @@ Device type can be :
 * large (***[992px - 1200px]***)
 * xlarge (***more than 1920px large***)
 
-Example of using: 
+Use example: 
 ```dart
 AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>(
   key: ValueKey("presenter"),
@@ -157,10 +157,10 @@ Here our floating button will be available only for devices smaller than large (
 ## Animations
 To create animations on your page you can use ```AlfreedPageBuilder``` factories:
 - ```AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animated(...)``` for single animation controller 
-- ```AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animatedMulti(...)``` or multiple animations controller
+- ```AlfreedPageBuilder<MyPresenter, MyModel, ViewInterface>.animatedMulti(...)``` for multiple animations controller.
 Then you have access to builder methods for your animations.
 
-Basically animations are accessed through a map where you name them. This can help finding each animations back when you need them.  
+Basically animations are accessed through a map where you name them. This can help finding your animations back when you need them.  
 
 > Animation(s) controller(s) and their animations will be available in your presenter and AlfreedPageBuilder builder methods within context. 
 
@@ -214,7 +214,7 @@ this.args
 <hr/>
 
 ## Developper hot reload
-Presenter has a ```rebuildOnHotReload``` that will trigger each time user hot reload and call onInit again. 
+Presenter has a ```rebuildOnHotReload``` that will trigger every time the user hot reloads and call onInit again. 
 By default rebuildOnHotReload is False, so state will be preserved. 
 
 ### Handle behavior on hot reload
@@ -232,7 +232,7 @@ var presenter = AlfreedUtils.getPresenterByKey<MyPresenter, MyModel>(
 
 * The Key must be unique and added to the ```AlfreedPageBuilder``` seen on step (***Create a page builder***)
 * The application must be started using a pumpWidget
-* the page is correctly build
+* the page is correctly built
 
 ### Get data from child widget
 You can directly get your viewmodel from an Alfreedpage child like using this : 
@@ -286,5 +286,5 @@ Preferences > User snippets
 
 <hr/>
 <br><br>
-<a href="https://en.apparence.io"><img src="https://github.com/Apparence-io/bart/raw/master/.github/img/logo.png" alt="Apparence.io logo"></a>
+<a href="https://en.apparence.io"><img src="https://raw.githubusercontent.com/Apparence-io/bart/master/.github/img/apparence_logo.png"></a>
 <p><small>Developed with 💙 &nbsp;by Apparence.io</small></p>
